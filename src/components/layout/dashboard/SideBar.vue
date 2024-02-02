@@ -4,7 +4,7 @@ import { CardContainer, CardContent, CardHeader } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import { HomeIcon, PlusCircle } from 'lucide-vue-next'
 import { computed } from 'vue'
-import { RouterLink, useRouter } from 'vue-router'
+import { RouterLink, useRoute } from 'vue-router'
 
 // Sidebar urls
 const paths = [
@@ -26,8 +26,8 @@ const paths = [
 ]
 
 // Current URL
-const route = useRouter()
-const currentRouteName = computed(() => route.currentRoute.value.name?.toString() ?? '/')
+const route = useRoute()
+const currentRouteName = computed(() => route.path)
 </script>
 
 <template>

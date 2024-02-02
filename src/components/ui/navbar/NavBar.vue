@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 import { Menu, MoonStar, Sun, UserCircle2, X } from 'lucide-vue-next'
 import { computed, inject } from 'vue'
 import { RouterLink } from 'vue-router'
-import { useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 
 interface NavBarProps {
   isNavBarExpanded: boolean
@@ -27,8 +27,8 @@ const paths = [
 ]
 
 // Route state
-const route = useRouter()
-const currentRouteName = computed(() => route.currentRoute.value.name?.toString())
+const route = useRoute()
+const currentRouteName = computed(() => route.path)
 
 // Theme state
 const { theme, updateTheme } = inject(injectThemeKey) as ThemeProviderProps
