@@ -3,7 +3,7 @@ import { ScnButton } from '../button'
 import { injectThemeKey } from '@/components/layout/theme/theme'
 import type { ThemeProviderProps } from '@/components/layout/theme/theme'
 import { cn } from '@/lib/utils'
-import { LogOut, Menu, MoonStar, Settings, Sun, UserCircle2, X } from 'lucide-vue-next'
+import { Menu, MoonStar, Sun, UserCircle2, X } from 'lucide-vue-next'
 import { computed, inject } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useRouter } from 'vue-router'
@@ -16,8 +16,8 @@ interface NavBarEmits {
   (e: 'toggleNavBarExpanded'): void
 }
 
-defineProps<NavBarProps>()
-defineEmits<NavBarEmits>()
+const props = defineProps<NavBarProps>()
+const emits = defineEmits<NavBarEmits>()
 
 const paths = [
   {
@@ -50,7 +50,7 @@ const { theme, updateTheme } = inject(injectThemeKey) as ThemeProviderProps
       size="icon"
       aria-label="Menu"
       class="lg:hidden"
-      @click="$emit('toggleNavBarExpanded')"
+      @click="emits('toggleNavBarExpanded')"
     >
       <Menu :size="36" class="stroke-foreground" />
     </ScnButton>
@@ -59,8 +59,8 @@ const { theme, updateTheme } = inject(injectThemeKey) as ThemeProviderProps
       data-cy="navbar-expanded"
       :class="
         cn(
-          'font-inter fixed right-0 top-0 z-10 flex h-full w-[230px] flex-col gap-6 border-l-2 border-l-border bg-background p-5 text-base duration-300 ease-in-out lg:static lg:h-auto lg:w-auto lg:translate-x-0 lg:flex-row-reverse lg:items-center lg:gap-12 lg:border-none lg:bg-transparent lg:p-0 lg:dark:bg-transparent xl:text-lg',
-          isNavBarExpanded ? 'translate-x-0' : 'translate-x-full'
+          'fixed right-0 top-0 z-10 flex h-full w-[230px] flex-col gap-6 border-l-2 border-l-border bg-background p-5 font-inter text-base duration-300 ease-in-out lg:static lg:h-auto lg:w-auto lg:translate-x-0 lg:flex-row-reverse lg:items-center lg:gap-12 lg:border-none lg:bg-transparent lg:p-0 lg:dark:bg-transparent xl:text-lg',
+          props.isNavBarExpanded ? 'translate-x-0' : 'translate-x-full'
         )
       "
     >
@@ -191,7 +191,7 @@ const { theme, updateTheme } = inject(injectThemeKey) as ThemeProviderProps
 
     <!-- Side bar opaque background -->
     <div
-      v-if="isNavBarExpanded"
+      v-if="props.isNavBarExpanded"
       data-cy="navbar-opaque"
       @click="$emit('toggleNavBarExpanded')"
       class="fixed inset-0 z-0 h-full w-full bg-opacity-80 backdrop-blur-sm lg:hidden"
