@@ -1,5 +1,6 @@
 import LinksView from '../views/DashboardView/LinksView.vue'
 import HomeView from '../views/HomeView.vue'
+import AboutView from '@/views/AboutView.vue'
 import AnalyticsView from '@/views/DashboardView/AnalyticsView.vue'
 import CreateNewView from '@/views/DashboardView/CreateNewView.vue'
 import SettingsView from '@/views/DashboardView/SettingsView.vue'
@@ -18,6 +19,11 @@ const router = createRouter({
       path: '/privacy-policy',
       name: 'privacy-policy',
       component: PrivacyPolicyView
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: AboutView
     },
     {
       path: '/dashboard',

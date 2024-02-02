@@ -4,6 +4,7 @@ import { useHead } from '@unhead/vue'
 import { ArrowRightCircle } from 'lucide-vue-next'
 import { RouterLink } from 'vue-router'
 
+// Add custom metatags for current page
 useHead({
   title: 'Snip URL',
   meta: [

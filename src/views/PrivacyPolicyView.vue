@@ -1,6 +1,23 @@
 <script setup lang="ts">
 import { ScnButton } from '@/components/ui/button'
+import { useHead } from '@unhead/vue'
+
+// Add custom metatags for current page
+useHead({
+  title: 'Privacy Policy | Snip URL',
+  meta: [
+    {
+      name: 'og:title',
+      content: 'Privacy Policy | Snip URL'
+    },
+    {
+      name: 'twitter:title',
+      content: 'Privacy Policy | Snip URL'
+    }
+  ]
+})
 </script>
+
 <template>
   <main class="flex flex-auto justify-center p-6 py-12 sm:p-12 lg:p-24">
     <section data-cy="privacy-policy-section" class="flex max-w-4xl flex-col gap-5 lg:gap-10">
