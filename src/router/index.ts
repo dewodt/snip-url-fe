@@ -2,6 +2,8 @@ import LinksView from '../views/DashboardView/LinksView.vue'
 import HomeView from '../views/HomeView.vue'
 import AnalyticsView from '@/views/DashboardView/AnalyticsView.vue'
 import CreateNewView from '@/views/DashboardView/CreateNewView.vue'
+import SettingsView from '@/views/DashboardView/SettingsView.vue'
+import PrivacyPolicyView from '@/views/PrivacyPolicyView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -11,6 +13,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView
+    },
+    {
+      path: '/privacy-policy',
+      name: 'privacy-policy',
+      component: PrivacyPolicyView
     },
     {
       path: '/dashboard',
@@ -32,6 +39,12 @@ const router = createRouter({
       path: '/dashboard/create-new',
       name: 'dashboard-create-new',
       component: CreateNewView,
+      meta: { layout: 'dashboard' }
+    },
+    {
+      path: '/dashboard/settings',
+      name: 'dashboard-settings',
+      component: SettingsView,
       meta: { layout: 'dashboard' }
     }
   ]
