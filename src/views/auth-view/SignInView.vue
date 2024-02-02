@@ -1,8 +1,22 @@
 <script setup lang="ts">
 import SignInForm from '@/components/forms/SignInForm.vue'
 import { CardContainer, CardContent, CardHeader } from '@/components/ui/card'
+import { useHead } from '@unhead/vue'
 
-// Metadata
+// Add custom metatags for current page
+useHead({
+  title: 'Sign In | Snip URL',
+  meta: [
+    {
+      name: 'og:title',
+      content: 'Sign In | Snip URL'
+    },
+    {
+      name: 'twitter:title',
+      content: 'Sign In | Snip URL'
+    }
+  ]
+})
 </script>
 
 <template>
