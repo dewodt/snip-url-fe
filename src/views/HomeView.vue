@@ -1,16 +1,31 @@
 <script setup lang="ts">
 import { ScnButton } from '@/components/ui/button'
+import { useHead } from '@unhead/vue'
 import { ArrowRightCircle } from 'lucide-vue-next'
-import type { RouterLink } from 'vue-router'
+import { RouterLink } from 'vue-router'
+
+useHead({
+  title: 'Snip URL',
+  meta: [
+    {
+      name: 'og:title',
+      content: 'Snip URL'
+    },
+    {
+      name: 'twitter:title',
+      content: 'Snip URL'
+    }
+  ]
+})
 </script>
 
 <template>
-  <main className="flex flex-auto flex-col">
+  <main class="flex flex-auto flex-col">
     <!-- Hero Section -->
     <section
-      className="flex min-h-[calc(100vh-90px)] w-full items-center justify-center px-6 py-16 sm:p-12 lg:p-24"
+      class="flex min-h-[calc(100vh-90px)] w-full items-center justify-center px-6 py-16 sm:p-12 lg:p-24"
     >
-      <div className="flex max-w-7xl flex-col-reverse items-center gap-6 sm:flex-row lg:gap-16">
+      <div class="flex max-w-7xl flex-col-reverse items-center gap-6 sm:flex-row lg:gap-16">
         <!-- Hero Texts -->
         <div class="flex flex-col items-start gap-3 lg:gap-6">
           <h1 data-cy="hero-title" class="text-4xl font-bold lg:text-6xl">Shorten URL Easily.</h1>
@@ -34,7 +49,7 @@ import type { RouterLink } from 'vue-router'
           src="/logo-cropped.png"
           alt="Snip URL Logo"
           data-cy="hero-image"
-          className="w-[250px] lg:w-[420px]"
+          class="w-[250px] lg:w-[420px]"
         />
       </div>
     </section>
