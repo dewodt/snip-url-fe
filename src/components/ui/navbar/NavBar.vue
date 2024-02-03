@@ -21,8 +21,8 @@ const emits = defineEmits<NavBarEmits>()
 
 const paths = [
   {
-    name: 'Snip',
-    url: '/snip'
+    name: 'Dashboard',
+    url: '/dashboard'
   }
 ]
 
@@ -166,9 +166,15 @@ const { theme, updateTheme } = inject(injectThemeKey) as ThemeProviderProps
         <ul class="flex flex-col lg:flex-row lg:gap-12">
           <li v-for="path in paths" :key="path.url" class="py-2">
             <router-link
-              :data-cy="`navbar-link-${path.name.toLowerCase()}`"
               :to="path.url"
-              :class="`${currentRouteName?.startsWith(path.url) ? 'font-semibold text-foreground' : 'font-medium lg:hover:text-foreground'} text-muted-foreground`"
+              :class="
+                cn(
+                  'text-muted-foreground',
+                  currentRouteName.startsWith(path.url)
+                    ? 'font-semibold text-foreground'
+                    : 'font-medium lg:hover:text-foreground'
+                )
+              "
             >
               {{ path.name }}
             </router-link>
