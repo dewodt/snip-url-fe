@@ -37,7 +37,7 @@ useHead({
             With Snip URL we help you shortern your URL easily and quickly so it is easier to share
             and remember.
           </p>
-          <RouterLink to="/snip" data-cy="hero-link">
+          <RouterLink to="/dashboard/create-new" data-cy="hero-link">
             <ScnButton size="lg">
               Try Now
               <ArrowRightCircle class="ml-2 h-5 w-5" />

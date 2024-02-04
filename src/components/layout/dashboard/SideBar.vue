@@ -84,4 +84,3 @@ const currentRouteName = computed(() => route.path)
     </CardContainer>
   </aside>
 </template>
-  
