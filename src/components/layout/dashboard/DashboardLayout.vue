@@ -4,7 +4,7 @@ import SideBar from './SideBar.vue'
 
 <template>
   <div class="flex flex-auto justify-center p-6 py-12 sm:p-12">
-    <div class="flex w-full max-w-5xl flex-col gap-6 md:flex-row">
+    <div class="flex w-full max-w-5xl flex-col gap-6 lg:flex-row">
       <SideBar />
 
       <slot>

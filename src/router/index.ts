@@ -5,9 +5,9 @@ import PrivacyPolicyView from '@/views/PrivacyPolicyView.vue'
 import ErrorView from '@/views/auth/ErrorView.vue'
 import SignInView from '@/views/auth/SignInView.vue'
 import VerifyRequestView from '@/views/auth/VerifyRequestView.vue'
-import AnalyticsView from '@/views/dashboard/AnalyticsView.vue'
 import CreateNewView from '@/views/dashboard/CreateNewView.vue'
 import SettingsView from '@/views/dashboard/SettingsView.vue'
+import LinksDetailView from '@/views/dashboard/links/LinksDetailView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -58,9 +58,9 @@ const router = createRouter({
       meta: { layout: 'dashboard' }
     },
     {
-      path: '/dashboard/analytics',
-      name: 'dashboard-analytics',
-      component: AnalyticsView,
+      path: '/dashboard/links/:id',
+      name: 'dashboard-links-detail',
+      component: LinksDetailView,
       meta: { layout: 'dashboard' }
     },
     {

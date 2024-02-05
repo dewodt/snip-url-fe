@@ -16,12 +16,6 @@ const paths = [
   },
   {
     id: 2,
-    title: 'Analytics',
-    path: '/dashboard/analytics',
-    icon: BarChart3
-  },
-  {
-    id: 3,
     title: 'Settings',
     path: '/dashboard/settings',
     icon: SettingsIcon
@@ -34,7 +28,7 @@ const currentRouteName = computed(() => route.path)
 </script>
 
 <template>
-  <aside class="w-full md:max-w-[240px]">
+  <aside class="w-full lg:max-w-[240px]">
     <CardContainer class="shadow-lg">
       <CardHeader>
         <div class="flex flex-row items-center gap-2">

@@ -6,7 +6,7 @@ export const signInSchema = z.object({
 })
 
 // Create new schema
-export const createNewSchema = z.object({
+export const createUpdateSchema = z.object({
   title: z.string({ required_error: 'Title is required' }).min(1, 'Title is required'),
   destinationUrl: z
     .string({ required_error: 'Destination URL is required' })
