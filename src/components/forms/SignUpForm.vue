@@ -6,13 +6,13 @@ import ScnButton from '@/components/ui/button/ScnButton.vue'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { ScnInput } from '@/components/ui/input'
 import { ScnSeparator } from '@/components/ui/separator'
-import { signInSchema } from '@/lib/zod'
+import { signUpSchema } from '@/lib/zod'
 import { toTypedSchema } from '@vee-validate/zod'
 import { Loader2 } from 'lucide-vue-next'
 import { useForm } from 'vee-validate'
 
 // Form schema
-const formSchema = toTypedSchema(signInSchema)
+const formSchema = toTypedSchema(signUpSchema)
 
 // Form hooks
 const form = useForm({
@@ -28,6 +28,22 @@ const onSubmit = form.handleSubmit(async (values) => {
 <template>
   <div class="flex flex-col gap-5">
     <form @submit="onSubmit" class="flex flex-col gap-5">
+      <!-- Name -->
+      <FormField v-slot="{ componentField }" name="name">
+        <FormItem>
+          <FormLabel>Name</FormLabel>
+          <FormControl>
+            <ScnInput
+              type="text"
+              placeholder="Name"
+              v-bind="componentField"
+              :disabled="form.isSubmitting.value"
+            />
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+
       <!-- Email -->
       <FormField v-slot="{ componentField }" name="email">
         <FormItem>
@@ -106,9 +122,9 @@ const onSubmit = form.handleSubmit(async (values) => {
     <!-- Sign up option -->
     <div>
       <p class="text-center text-sm">
-        Don't have an account?
-        <RouterLink to="/auth/sign-up" class="font-medium hover:underline hover:underline-offset-4">
-          Sign up
+        Already have an account?
+        <RouterLink to="/auth/sign-in" class="font-medium hover:underline hover:underline-offset-4">
+          Sign in
         </RouterLink>
       </p>
     </div>

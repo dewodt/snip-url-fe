@@ -4,6 +4,7 @@ import AboutView from '@/views/AboutView.vue'
 import PrivacyPolicyView from '@/views/PrivacyPolicyView.vue'
 import ErrorView from '@/views/auth/ErrorView.vue'
 import SignInView from '@/views/auth/SignInView.vue'
+import SignUpView from '@/views/auth/SignUpView.vue'
 import VerifyRequestView from '@/views/auth/VerifyRequestView.vue'
 import CreateNewView from '@/views/dashboard/CreateNewView.vue'
 import SettingsView from '@/views/dashboard/SettingsView.vue'
@@ -36,6 +37,11 @@ const router = createRouter({
       path: '/auth/sign-in',
       name: 'auth-sign-in',
       component: SignInView
+    },
+    {
+      path: '/auth/sign-up',
+      name: 'auth-sign-up',
+      component: SignUpView
     },
     {
       path: '/auth/verify-request',

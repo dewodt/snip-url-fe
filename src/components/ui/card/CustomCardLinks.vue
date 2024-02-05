@@ -85,7 +85,7 @@ watch(isCopied, (newValue) => {
             <a
               :href="getShortenedUrl(0)"
               target="_blank"
-              class="text-base text-blue-500 hover:underline hover:underline-offset-2"
+              class="text-base text-blue-500 hover:underline hover:underline-offset-4"
             >
               {{ getShortenedUrl(0) }}
             </a>
@@ -120,7 +120,7 @@ watch(isCopied, (newValue) => {
           <a
             :href="props.destinationUrl"
             target="_blank"
-            class="text-base hover:underline hover:underline-offset-2"
+            class="text-base hover:underline hover:underline-offset-4"
           >
             {{ props.destinationUrl }}
           </a>
