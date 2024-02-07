@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { useAttrs } from 'vue'
 import { useFormField } from './useFormField'
 import { cn } from '@/lib/utils'
+import { useAttrs } from 'vue'
 
 defineOptions({
-  inheritAttrs: false,
+  inheritAttrs: false
 })
 
 const { formDescriptionId } = useFormField()

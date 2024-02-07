@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { useAttrs } from 'vue'
-import { Label, type LabelProps } from 'radix-vue'
 import { useFormField } from './useFormField'
 import { cn } from '@/lib/utils'
+import { Label, type LabelProps } from 'radix-vue'
+import { useAttrs } from 'vue'
 
 defineOptions({
-  inheritAttrs: false,
+  inheritAttrs: false
 })
 const props = defineProps<LabelProps>()
 
@@ -15,11 +15,13 @@ const { class: className, ...rest } = useAttrs()
 
 <template>
   <Label
-    :class="cn(
-      'block text-sm tracking-tight font-medium text-foreground text-left',
-      error && 'text-destructive',
-      className ?? '',
-    )"
+    :class="
+      cn(
+        'block text-left text-sm font-medium tracking-tight text-foreground',
+        error && 'text-destructive',
+        className ?? ''
+      )
+    "
     :for="formItemId"
     v-bind="rest"
   >
