@@ -1,7 +1,23 @@
 <script setup lang="ts">
 import { CardContainer, CardContent, CardHeader, CustomCardLinks } from '@/components/ui/card'
+import { useHead } from '@unhead/vue'
 import { LinkIcon } from 'lucide-vue-next'
 import { ref } from 'vue'
+
+// Add custom metatags for current page
+useHead({
+  title: 'Links | Snip URL',
+  meta: [
+    {
+      name: 'og:title',
+      content: 'Links | Snip URL'
+    },
+    {
+      name: 'twitter:title',
+      content: 'Links | Snip URL'
+    }
+  ]
+})
 
 // Template data
 const data = ref([

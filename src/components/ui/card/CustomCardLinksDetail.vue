@@ -26,7 +26,6 @@ import {
   Calendar,
   CopyIcon,
   GlobeIcon,
-  LinkIcon,
   MoreHorizontal,
   PencilIcon,
   Trash2Icon
@@ -63,7 +62,7 @@ watch(isCopied, (newValue) => {
   <div
     :class="
       cn(
-        'flex flex-col gap-4 rounded-lg border bg-card p-4 lg:flex-row lg:justify-between lg:p-5',
+        'flex h-fit flex-col gap-4 rounded-lg border bg-card p-6 shadow-lg lg:flex-row lg:justify-between',
         props.class
       )
     "
@@ -194,12 +193,6 @@ watch(isCopied, (newValue) => {
           </ScnButton>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" class="w-[150px]">
-          <DropdownMenuItem>
-            <RouterLink :to="`/dashboard/links/${props.id}`" class="flex">
-              <LinkIcon class="mr-2 size-5" />
-              <p>View detail</p>
-            </RouterLink>
-          </DropdownMenuItem>
           <DropdownMenuItem class="text-destructive focus:text-destructive" disabled>
             <Trash2Icon class="mr-2 size-5" />
             <p>Delete</p>

@@ -5,6 +5,7 @@ export { default as CardDescription } from './CardDescription.vue'
 export { default as CardContent } from './CardContent.vue'
 export { default as CardFooter } from './CardFooter.vue'
 export { default as CustomCardLinks } from './CustomCardLinks.vue'
+export { default as CustomCardLinksDetail } from './CustomCardLinksDetail.vue'
 
 // CustomCardLinks
 export interface CustomCardLinksProps {
@@ -14,4 +15,5 @@ export interface CustomCardLinksProps {
   destinationUrl: string
   engagements: number
   createdAt: Date
+  class: string
 }
