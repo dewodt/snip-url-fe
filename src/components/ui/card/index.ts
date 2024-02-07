@@ -17,3 +17,15 @@ export interface CustomCardLinksProps {
   createdAt: Date
   class: string
 }
+
+// CustomCardLocationStats
+export interface LocationStats {
+  id: string
+  country: string
+  engagements: number
+  percentage: number
+}
+export interface CustomCardLocationStatsProps {
+  data: LocationStats[]
+  class: string
+}

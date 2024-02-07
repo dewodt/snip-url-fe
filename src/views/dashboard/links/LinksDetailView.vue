@@ -3,8 +3,9 @@ import type { DateChartData, StringChartData } from '@/components/charts'
 import DevicesChart from '@/components/charts/DevicesChart.vue'
 import Last4WeeksChart from '@/components/charts/Last4WeeksChart.vue'
 import ReferrersChart from '@/components/charts/ReferrersChart.vue'
-import { CardContainer, CardContent, CardHeader } from '@/components/ui/card'
+import { CardContainer, CardContent, CardHeader, type LocationStats } from '@/components/ui/card'
 import CustomCardLinksDetail from '@/components/ui/card/CustomCardLinksDetail.vue'
+import CustomCardLocationStats from '@/components/ui/card/CustomCardLocationStats.vue'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { useHead } from '@unhead/vue'
 import { useRoute } from 'vue-router'
@@ -224,46 +225,36 @@ const mockDevices: StringChartData = [
     count: 400
   }
 ]
-const mockLocation: StringChartData = [
+const mockLocation: LocationStats[] = [
   {
-    label: 'United States',
-    count: 100
+    id: 'ID',
+    country: 'Indonesia',
+    engagements: 100,
+    percentage: 25.3
   },
   {
-    label: 'India',
-    count: 200
+    id: 'ID',
+    country: 'United States',
+    engagements: 200,
+    percentage: 50.2
   },
   {
-    label: 'United Kingdom',
-    count: 300
+    id: 'ID',
+    country: 'India',
+    engagements: 300,
+    percentage: 35.1
   },
   {
-    label: 'Canada',
-    count: 400
+    id: 'ID',
+    country: 'China',
+    engagements: 400,
+    percentage: 25.3
   },
   {
-    label: 'Australia',
-    count: 350
-  },
-  {
-    label: 'Germany',
-    count: 375
-  },
-  {
-    label: 'France',
-    count: 400
-  },
-  {
-    label: 'Brazil',
-    count: 275
-  },
-  {
-    label: 'Japan',
-    count: 150
-  },
-  {
-    label: 'Other',
-    count: 250
+    id: '-',
+    country: 'Other',
+    engagements: 350,
+    percentage: 17.5
   }
 ]
 </script>
@@ -276,7 +267,7 @@ const mockLocation: StringChartData = [
     <!-- Total Engagement -->
     <CardContainer class="shadow-lg">
       <CardHeader class="px-6 pb-2 pt-6">
-        <h2 class="text-base font-semibold text-primary">Total Engagement</h2>
+        <h3 class="text-base font-semibold text-primary">Total Engagement</h3>
       </CardHeader>
       <CardContent>
         <p class="text-xl font-bold">420</p>
@@ -286,7 +277,7 @@ const mockLocation: StringChartData = [
     <!-- Last 7 Days Engagement -->
     <CardContainer class="shadow-lg">
       <CardHeader class="px-6 pb-2 pt-6">
-        <h2 class="text-base font-semibold text-primary">Last 7 Days</h2>
+        <h3 class="text-base font-semibold text-primary">Last 7 Days</h3>
       </CardHeader>
       <CardContent>
         <p class="text-xl font-bold">69</p>
@@ -296,7 +287,7 @@ const mockLocation: StringChartData = [
     <!-- Engagement last 4 weeks (1 Month) -->
     <CardContainer class="shadow-lg sm:col-span-full">
       <CardHeader class="p-6">
-        <h2 class="text-base font-semibold text-primary">Last 4 Weeks</h2>
+        <h3 class="text-base font-semibold text-primary">Last 4 Weeks</h3>
       </CardHeader>
       <CardContent>
         <ScrollArea class="w-full">
@@ -307,11 +298,12 @@ const mockLocation: StringChartData = [
     </CardContainer>
 
     <!-- Location -->
+    <CustomCardLocationStats class="col-span-full" :data="mockLocation" />
 
     <!-- Referrers -->
-    <CardContainer class="col-span shadow-lg">
+    <CardContainer class="shadow-lg">
       <CardHeader class="p-6">
-        <h2 class="text-base font-semibold text-primary">Referrers</h2>
+        <h3 class="text-base font-semibold text-primary">Referrers</h3>
       </CardHeader>
       <CardContent>
         <ReferrersChart :data="mockReferrerData" />
@@ -321,7 +313,7 @@ const mockLocation: StringChartData = [
     <!-- Devices -->
     <CardContainer class="shadow-lg">
       <CardHeader class="p-6">
-        <h2 class="text-base font-semibold text-primary">Devices</h2>
+        <h3 class="text-base font-semibold text-primary">Devices</h3>
       </CardHeader>
       <CardContent>
         <DevicesChart :data="mockDevices" />
