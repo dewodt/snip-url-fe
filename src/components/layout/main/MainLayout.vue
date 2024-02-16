@@ -2,6 +2,7 @@
 import FooterBar from '../../ui/footer/FooterBar.vue'
 import NavBar from '../../ui/navbar/NavBar.vue'
 import { useNavBar } from '../../ui/navbar/navbar'
+import { Toaster } from '@/components/ui/sonner'
 import { cn } from '@/lib/utils'
 
 const { isNavBarExpanded, toggleNavBarExpanded } = useNavBar()
@@ -22,5 +23,8 @@ const { isNavBarExpanded, toggleNavBarExpanded } = useNavBar()
 
     <!-- Footer -->
     <FooterBar />
+
+    <!-- Toaster -->
+    <Toaster :richColors="true" :closeButton="true" position="top-center" />
   </div>
 </template>
