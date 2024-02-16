@@ -7,9 +7,11 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/comp
 import { ScnInput } from '@/components/ui/input'
 import { ScnSeparator } from '@/components/ui/separator'
 import { signUpSchema } from '@/lib/zod'
+import router from '@/router'
 import { toTypedSchema } from '@vee-validate/zod'
 import { Loader2 } from 'lucide-vue-next'
 import { useForm } from 'vee-validate'
+import { toast } from 'vue-sonner'
 
 // Form schema
 const formSchema = toTypedSchema(signUpSchema)
@@ -19,10 +21,60 @@ const form = useForm({
   validationSchema: formSchema
 })
 
+// Get backend URL
+const beURL = import.meta.env.VITE_BE_URL
+
 // Submit handler
 const onSubmit = form.handleSubmit(async (values) => {
-  console.log('Form submitted!', values)
+  // Create form data
+  const formData = new FormData()
+  formData.append('email', values.email)
+  formData.append('name', values.name)
+
+  // Initialize loading
+  toast.loading('Loading...', { description: 'Please wait' })
+
+  // Send form data to backend
+  const res = await fetch(`${beURL}/api/auth/email/sign-up`, {
+    method: 'POST',
+    body: formData
+  })
+  const resJSON = await res.json()
+
+  // Handle response
+  if (!res.ok) {
+    toast.error('Error', {
+      description: resJSON.error
+    })
+    return
+  }
+
+  // Success
+  toast.success('Success', {
+    description: 'Please check your email for the magic link.'
+  })
+
+  // Redirect to verify email page
+  const timeOut = setTimeout(() => {
+    clearTimeout(timeOut)
+    router.push('/auth/verify-request')
+  }, 2000)
 })
+
+const onClickGoogle = () => {
+  const googleOAuthURL = `${beURL}/api/auth/google`
+  window.location.href = googleOAuthURL
+}
+
+const onClickGitHub = () => {
+  const githubOAuthURL = `${beURL}/api/auth/github`
+  window.location.href = githubOAuthURL
+}
+
+const onClickDiscord = () => {
+  const discordOAuthURL = `${beURL}/api/auth/discord`
+  window.location.href = discordOAuthURL
+}
 </script>
 
 <template>
@@ -90,6 +142,7 @@ const onSubmit = form.handleSubmit(async (values) => {
       size="lg"
       class="flex w-full flex-row items-center gap-3"
       :disabled="form.isSubmitting.value"
+      @click="onClickGoogle"
     >
       <GoogleIcon :size="20" />
       Continue with Google
@@ -102,6 +155,7 @@ const onSubmit = form.handleSubmit(async (values) => {
       size="lg"
       class="flex w-full flex-row items-center gap-3"
       :disabled="form.isSubmitting.value"
+      @click="onClickGitHub"
     >
       <GitHubIcon :size="20" />
       Continue with GitHub
@@ -114,6 +168,7 @@ const onSubmit = form.handleSubmit(async (values) => {
       size="lg"
       class="flex w-full flex-row items-center gap-3"
       :disabled="form.isSubmitting.value"
+      @click="onClickDiscord"
     >
       <DiscordIcon :size="20" />
       Continue with Discord
