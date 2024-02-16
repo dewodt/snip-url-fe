@@ -1,9 +1,19 @@
 <script setup lang="ts">
+import { AvatarContainer, AvatarFallback, AvatarImage } from '../avatar'
 import { ScnButton } from '../button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator
+} from '../dropdown-menu'
 import { injectThemeKey } from '@/components/layout/theme/theme'
 import type { ThemeProviderProps } from '@/components/layout/theme/theme'
+import { useSession } from '@/hooks/session'
 import { cn } from '@/lib/utils'
-import { Menu, MoonStar, Sun, UserCircle2, X } from 'lucide-vue-next'
+import { LogOut, Menu, MoonStar, Sun, UserCircle2, X } from 'lucide-vue-next'
+import { DropdownMenuTrigger } from 'radix-vue'
 import { computed, inject } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useRoute } from 'vue-router'
@@ -32,6 +42,20 @@ const currentRouteName = computed(() => route.path)
 
 // Theme state
 const { theme, updateTheme } = inject(injectThemeKey) as ThemeProviderProps
+
+// Get user session
+const { session, isLoading } = useSession()
+
+// On signout
+const onSignOut = () => {
+  const beURL = import.meta.env.VITE_BE_URL
+  fetch(`${beURL}/api/auth/sign-out`, {
+    method: 'GET',
+    credentials: 'include'
+  }).then(() => {
+    window.location.href = '/'
+  })
+}
 </script>
 
 <template>
@@ -79,73 +103,41 @@ const { theme, updateTheme } = inject(injectThemeKey) as ThemeProviderProps
           </ScnButton>
 
           <!-- Profile dropdown when there's session -->
-          <!-- {session ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger
-                  data-cy="navbar-dropdown-trigger"
-                  class="h-11 w-11 rounded-full border-4 border-transparent hover:border-border data-[state=open]:border-4 data-[state=open]:border-border"
-                >
-                  {/* Avatar */}
-                  <Avatar class="h-full w-full">
-                    <AvatarImage
-                      src={session.image!}
-                      alt="Avatar Image"
-                      class="object-cover object-center"
-                    />
-                    <AvatarFallback>
-                      <UserCircle2 class="h-full w-full stroke-gray-500 stroke-1" />
-                    </AvatarFallback>
-                  </Avatar>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  {/* Title */}
-                  <DropdownMenuLabel data-cy="navbar-dropdown-title">
-                    My Account
-                  </DropdownMenuLabel>
+          <DropdownMenu v-if="session && !isLoading">
+            <DropdownMenuTrigger
+              data-cy="navbar-dropdown-trigger"
+              class="flex h-11 w-11 items-center justify-center rounded-full border-4 border-transparent hover:border-border data-[state=open]:border-4 data-[state=open]:border-border"
+            >
+              <!-- Avatar  -->
+              <AvatarContainer class="h-10 w-10">
+                <AvatarImage
+                  src="{session.image!}"
+                  alt="Avatar Image"
+                  class="object-cover object-center"
+                />
+                <AvatarFallback>
+                  <UserCircle2 class="h-10 w-10 stroke-gray-500 stroke-1" />
+                </AvatarFallback>
+              </AvatarContainer>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <!-- Title  -->
+              <DropdownMenuLabel data-cy="navbar-dropdown-title"> My Account </DropdownMenuLabel>
 
-                  <DropdownMenuSeparator />
+              <DropdownMenuSeparator />
 
-                  {/* Settings */}
-                  <Link data-cy="navbar-dropdown-settings" href="/settings">
-                    <DropdownMenuItem>
-                      <Settings class="mr-2 h-4 w-4" />
-                      Settings
-                    </DropdownMenuItem>
-                  </Link>
-
-                  {/* My Links */}
-                  <Link data-cy="navbar-dropdown-settings" href="/settings">
-                    <DropdownMenuItem>
-                      <Settings class="mr-2 h-4 w-4" />
-                      Settings
-                    </DropdownMenuItem>
-                  </Link>
-
-                  {/* Sign Out */}
-                  <DropdownMenuItem
-                    data-cy="navbar-dropdown-sign-out"
-                    class="text-destructive focus:text-destructive"
-                  >
-                    <LogOut class="mr-2 h-4 w-4" />
-                    Sign Out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Link
-                data-cy="navbar-sign-in-desktop"
-                href="/auth/sign-in"
-                aria-label="Sign In"
-              >
-                <ScnButton
-                  variant="default"
-                  size="lg"
-                  class="hidden font-semibold lg:flex"
-                >
-                  Sign In
-                </ScnButton>
-              </Link>
-            )} -->
+              <!-- Sign Out -->
+              <DropdownMenuItem class="text-destructive focus:text-destructive" @click="onSignOut">
+                <LogOut class="mr-2 h-4 w-4" />
+                Sign Out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <RouterLink v-else to="/auth/sign-in" aria-label="Sign In">
+            <ScnButton variant="default" size="lg" class="hidden font-semibold lg:flex">
+              Sign In
+            </ScnButton>
+          </RouterLink>
         </div>
 
         <!-- Close ScnButton -->
@@ -183,16 +175,14 @@ const { theme, updateTheme } = inject(injectThemeKey) as ThemeProviderProps
       </nav>
 
       <!-- Sign In ScnButton when there's no session -->
-      <!-- {!session && (
-      <Link
-        data-cy="navbar-sign-in-mobile"
-        href="/auth/sign-in"
+      <RouterLink
+        v-if="!session || isLoading"
+        to="/auth/sign-in"
         class="self-center"
         aria-label="Sign In"
       >
         <ScnButton variant="default" size="lg" class="font-semibold lg:hidden"> Sign In </ScnButton>
-      </Link>
-      )} -->
+      </RouterLink>
     </div>
 
     <!-- Side bar opaque background -->
