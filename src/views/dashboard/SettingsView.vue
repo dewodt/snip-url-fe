@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import SettingsForm from '@/components/forms/SettingsForm.vue'
+import SettingsLoading from '@/components/loading/SettingsLoading.vue'
+import { useSession } from '@/hooks/session'
 import { useHead } from '@unhead/vue'
 
 // Add custom metatags for current page
@@ -16,10 +18,14 @@ useHead({
     }
   ]
 })
+
+// Get session
+const session = useSession()
 </script>
 
 <template>
   <main className="w-full">
-    <SettingsForm />
+    <SettingsForm v-if="!session.isLoading.value" v-bind="session" />
+    <SettingsLoading v-else />
   </main>
 </template>

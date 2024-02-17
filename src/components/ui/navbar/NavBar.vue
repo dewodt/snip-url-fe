@@ -44,7 +44,7 @@ const currentRouteName = computed(() => route.path)
 const { theme, updateTheme } = inject(injectThemeKey) as ThemeProviderProps
 
 // Get user session
-const { session, isLoading } = useSession()
+const session = useSession()
 
 // On signout
 const onSignOut = () => {
@@ -103,7 +103,7 @@ const onSignOut = () => {
           </ScnButton>
 
           <!-- Profile dropdown when there's session -->
-          <DropdownMenu v-if="session && !isLoading">
+          <DropdownMenu v-if="session.session.value && !session.isLoading.value">
             <DropdownMenuTrigger
               data-cy="navbar-dropdown-trigger"
               class="flex h-11 w-11 items-center justify-center rounded-full border-4 border-transparent hover:border-border data-[state=open]:border-4 data-[state=open]:border-border"
@@ -111,7 +111,7 @@ const onSignOut = () => {
               <!-- Avatar  -->
               <AvatarContainer class="h-10 w-10">
                 <AvatarImage
-                  src="{session.image!}"
+                  :src="session.session.value.avatar ?? ''"
                   alt="Avatar Image"
                   class="object-cover object-center"
                 />
@@ -176,7 +176,7 @@ const onSignOut = () => {
 
       <!-- Sign In ScnButton when there's no session -->
       <RouterLink
-        v-if="!session || isLoading"
+        v-if="!session.session.value || session.isLoading.value"
         to="/auth/sign-in"
         class="self-center"
         aria-label="Sign In"

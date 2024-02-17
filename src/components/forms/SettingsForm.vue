@@ -4,20 +4,28 @@ import { CardContainer, CardContent, CardHeader } from '../ui/card'
 import ScnButton from '@/components/ui/button/ScnButton.vue'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { ScnInput } from '@/components/ui/input'
+import type { SessionHookResponse } from '@/hooks/session'
 import { cn } from '@/lib/utils'
-import { settingsSchema } from '@/lib/zod'
+import { avatarSchema, settingsSchema } from '@/lib/zod'
 import { toTypedSchema } from '@vee-validate/zod'
 import { Trash2, UserCircle2, UserIcon } from 'lucide-vue-next'
 import { Loader2 } from 'lucide-vue-next'
 import { useForm } from 'vee-validate'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { toast } from 'vue-sonner'
+
+const props = defineProps<SessionHookResponse>()
 
 // Form schema
 const formSchema = toTypedSchema(settingsSchema)
 
 // Form hooks
 const form = useForm({
-  validationSchema: formSchema
+  validationSchema: formSchema,
+  initialValues: {
+    name: props.session.value?.name ?? '',
+    avatar: props.session.value?.avatar ?? null
+  }
 })
 
 // File input state
@@ -27,10 +35,98 @@ const toggleIsUploadingImage = () => {
   isUploadingImage.value = !isUploadingImage.value
 }
 
+// Get BE URL
+const beURL = import.meta.env.VITE_BE_URL
+
+// Upload avatar handler
+const onUploadAvatar = async (e: Event) => {
+  // Reset previous errors
+  form.setFieldError('avatar', undefined)
+
+  // If no files, return
+  const file = (e.target as HTMLInputElement).files![0]
+  if (!file) return
+
+  // Validate image
+  const zodResult = avatarSchema.safeParse(file)
+  if (!zodResult.success) {
+    // Set error to first error message
+    form.setFieldError('avatar', zodResult.error.issues[0].message)
+    return
+  }
+
+  // Create form data
+  const formData = new FormData()
+  formData.append('file', file)
+
+  // Set loading state
+  toggleIsUploadingImage()
+  toast.loading('Loading...', {
+    description: 'Uploading image'
+  })
+
+  // Upload file
+  const res = await fetch(`${beURL}/api/upload-avatar`, {
+    method: 'POST',
+    body: formData,
+    credentials: 'include'
+  })
+  const resJSON = await res.json()
+
+  // Reset loading state
+  toggleIsUploadingImage()
+
+  // If upload fails
+  if (!res.ok) {
+    toast.error('Error', { description: resJSON.error || 'Image upload failed' })
+    return
+  }
+
+  // Upload succeeded
+  toast.success('Success', { description: 'Image uploaded successfully' })
+  form.setValues({ avatar: resJSON.url })
+}
+
 // Submit handler
 const onSubmit = form.handleSubmit(async (values) => {
-  console.log('Form submitted!', values)
+  // Initiate loading toast
+  toast.loading('Loading...', {
+    description: 'Updating profile'
+  })
+
+  // Create form data
+  const formData = new FormData()
+  formData.append('name', values.name)
+  values.avatar && formData.append('avatar', values.avatar)
+
+  // Send request
+  const res = await fetch(`${beURL}/api/user`, {
+    method: 'PUT',
+    body: formData,
+    credentials: 'include'
+  })
+  const resJSON = await res.json()
+
+  // Error response
+  if (!res.ok) {
+    toast.error('Error', { description: resJSON.error || 'Profile update failed' })
+    return
+  }
+
+  // Success response
+  // Update session
+  props.updateSession()
+
+  // Show success toast
+  toast.success('Success', { description: 'Profile successfully updated' })
 })
+
+// form.isFieldDirty() is not triggered when using form.SetValues
+const isFormDirty = computed(
+  () =>
+    props.session.value?.name != form.values.name ||
+    props.session.value?.avatar != form.values.avatar
+)
 </script>
 
 <template>
@@ -63,7 +159,7 @@ const onSubmit = form.handleSubmit(async (values) => {
                 "
               >
                 <AvatarImage
-                  :src="form.values.image ?? ''"
+                  :src="form.values.avatar!"
                   alt="Avatar Upload Preview"
                   class="object-cover object-center"
                 />
@@ -80,7 +176,7 @@ const onSubmit = form.handleSubmit(async (values) => {
                     accept="image/*"
                     ref="fileInputRef"
                     :disabled="form.isSubmitting.value || isUploadingImage"
-                    onChange="{onUploadAvatar}"
+                    @change="onUploadAvatar"
                   />
                 </FormControl>
 
@@ -91,8 +187,8 @@ const onSubmit = form.handleSubmit(async (values) => {
                   variant="destructive"
                   size="icon"
                   class="flex-none"
-                  :disabled="form.isSubmitting.value || isUploadingImage || !form.values.image"
-                  @click="() => form.setFieldValue('image', null, true)"
+                  :disabled="form.isSubmitting.value || isUploadingImage || !form.values.avatar"
+                  @click="() => form.setFieldValue('avatar', null, true)"
                 >
                   <Trash2 class="h-5 w-5" />
                 </ScnButton>
@@ -107,7 +203,7 @@ const onSubmit = form.handleSubmit(async (values) => {
           <label class="block text-left text-sm font-medium tracking-tight text-foreground">
             Email
           </label>
-          <ScnInput type="text" default-value="foo@gmail.com" :disabled="true" />
+          <ScnInput type="text" :default-value="props.session.value?.email" :disabled="true" />
         </div>
 
         <!-- Name -->
@@ -126,11 +222,7 @@ const onSubmit = form.handleSubmit(async (values) => {
           class="w-full"
           size="lg"
           type="submit"
-          :disabled="
-            form.isSubmitting.value ||
-            isUploadingImage ||
-            (!form.isFieldDirty('name') && !form.isFieldDirty('image'))
-          "
+          :disabled="form.isSubmitting.value || isUploadingImage || !isFormDirty"
         >
           <Loader2 v-if="form.isSubmitting.value" class="mr-2 h-4 w-4 animate-spin" /> Update
         </ScnButton>

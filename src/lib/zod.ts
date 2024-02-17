@@ -30,5 +30,17 @@ export const createUpdateSchema = z.object({
 // Settings schema
 export const settingsSchema = z.object({
   name: z.string({ required_error: 'Name is required' }).min(1, 'Name is required'),
-  image: z.string().url('Invalid image url').nullable()
+  avatar: z.string().url('Invalid image url').nullable()
 })
+
+// Avatar schema
+const maxImageSize = 5 * 1024 * 1024
+const allowedImagesTypes = ['image/jpeg', 'image/png', 'image/webp']
+export const avatarSchema = z
+  .custom<File>()
+  .refine((file) => {
+    return file.size <= maxImageSize
+  }, `File size should be less than 5 MB`)
+  .refine((file) => {
+    return allowedImagesTypes.includes(file.type)
+  }, 'Only these types are allowed .jpg, .jpeg, .png and .webp')

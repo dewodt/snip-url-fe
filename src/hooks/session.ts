@@ -1,14 +1,14 @@
 import { QueryClient, useQuery } from '@tanstack/vue-query'
 import type { Ref } from 'vue'
 
-interface Session {
+export interface Session {
   id: string
-  username: string
+  name: string
   email: string
   avatar: string
 }
 
-interface SessionHookResponse {
+export interface SessionHookResponse {
   session: Ref<Session | null> | Ref<undefined>
   isLoading: Ref<boolean>
   updateSession: () => void
