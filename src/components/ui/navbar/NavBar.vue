@@ -8,13 +8,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator
 } from '../dropdown-menu'
-import { injectThemeKey } from '@/components/layout/theme/theme'
-import type { ThemeProviderProps } from '@/components/layout/theme/theme'
-import { useSession } from '@/hooks/session'
+import { useSession } from '@/components/layout/session/session'
+import { useTheme } from '@/components/layout/theme/theme'
 import { cn } from '@/lib/utils'
-import { LogOut, Menu, MoonStar, Sun, UserCircle2, X } from 'lucide-vue-next'
+import { LogOut, Menu, MoonStar, SettingsIcon, Sun, UserCircle2, X } from 'lucide-vue-next'
 import { DropdownMenuTrigger } from 'radix-vue'
-import { computed, inject } from 'vue'
+import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useRoute } from 'vue-router'
 
@@ -41,10 +40,10 @@ const route = useRoute()
 const currentRouteName = computed(() => route.path)
 
 // Theme state
-const { theme, updateTheme } = inject(injectThemeKey) as ThemeProviderProps
+const { theme, updateTheme } = useTheme()
 
 // Get user session
-const session = useSession()
+const { session, isLoading } = useSession()
 
 // On signout
 const onSignOut = () => {
@@ -103,7 +102,7 @@ const onSignOut = () => {
           </ScnButton>
 
           <!-- Profile dropdown when there's session -->
-          <DropdownMenu v-if="session.session.value && !session.isLoading.value">
+          <DropdownMenu v-if="session && !isLoading">
             <DropdownMenuTrigger
               data-cy="navbar-dropdown-trigger"
               class="flex h-11 w-11 items-center justify-center rounded-full border-4 border-transparent hover:border-border data-[state=open]:border-4 data-[state=open]:border-border"
@@ -111,7 +110,7 @@ const onSignOut = () => {
               <!-- Avatar  -->
               <AvatarContainer class="h-10 w-10">
                 <AvatarImage
-                  :src="session.session.value.avatar ?? ''"
+                  :src="session.avatar ?? ''"
                   alt="Avatar Image"
                   class="object-cover object-center"
                 />
@@ -122,9 +121,17 @@ const onSignOut = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <!-- Title  -->
-              <DropdownMenuLabel data-cy="navbar-dropdown-title"> My Account </DropdownMenuLabel>
+              <DropdownMenuLabel data-cy="navbar-dropdown-title">My Account</DropdownMenuLabel>
 
               <DropdownMenuSeparator />
+
+              <!-- Settings -->
+              <RouterLink to="/dashboard/settings">
+                <DropdownMenuItem>
+                  <SettingsIcon class="mr-2 h-4 w-4" />
+                  Settings
+                </DropdownMenuItem>
+              </RouterLink>
 
               <!-- Sign Out -->
               <DropdownMenuItem class="text-destructive focus:text-destructive" @click="onSignOut">
@@ -176,7 +183,7 @@ const onSignOut = () => {
 
       <!-- Sign In ScnButton when there's no session -->
       <RouterLink
-        v-if="!session.session.value || session.isLoading.value"
+        v-if="!session || isLoading"
         to="/auth/sign-in"
         class="self-center"
         aria-label="Sign In"

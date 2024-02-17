@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { useSession } from '../layout/session/session'
 import { AvatarContainer, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { CardContainer, CardContent, CardHeader } from '../ui/card'
 import ScnButton from '@/components/ui/button/ScnButton.vue'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { ScnInput } from '@/components/ui/input'
-import type { SessionHookResponse } from '@/hooks/session'
 import { cn } from '@/lib/utils'
 import { avatarSchema, settingsSchema } from '@/lib/zod'
 import { toTypedSchema } from '@vee-validate/zod'
@@ -14,7 +14,8 @@ import { useForm } from 'vee-validate'
 import { computed, ref } from 'vue'
 import { toast } from 'vue-sonner'
 
-const props = defineProps<SessionHookResponse>()
+// Get session from provider
+const { session, updateSession } = useSession()
 
 // Form schema
 const formSchema = toTypedSchema(settingsSchema)
@@ -23,8 +24,8 @@ const formSchema = toTypedSchema(settingsSchema)
 const form = useForm({
   validationSchema: formSchema,
   initialValues: {
-    name: props.session.value?.name ?? '',
-    avatar: props.session.value?.avatar ?? null
+    name: session.value?.name ?? '',
+    avatar: session.value?.avatar ?? null
   }
 })
 
@@ -115,7 +116,7 @@ const onSubmit = form.handleSubmit(async (values) => {
 
   // Success response
   // Update session
-  props.updateSession()
+  updateSession()
 
   // Show success toast
   toast.success('Success', { description: 'Profile successfully updated' })
@@ -123,9 +124,7 @@ const onSubmit = form.handleSubmit(async (values) => {
 
 // form.isFieldDirty() is not triggered when using form.SetValues
 const isFormDirty = computed(
-  () =>
-    props.session.value?.name != form.values.name ||
-    props.session.value?.avatar != form.values.avatar
+  () => session.value?.name != form.values.name || session.value?.avatar != form.values.avatar
 )
 </script>
 
@@ -203,7 +202,7 @@ const isFormDirty = computed(
           <label class="block text-left text-sm font-medium tracking-tight text-foreground">
             Email
           </label>
-          <ScnInput type="text" :default-value="props.session.value?.email" :disabled="true" />
+          <ScnInput type="text" :default-value="session?.email" :disabled="true" />
         </div>
 
         <!-- Name -->

@@ -11,6 +11,7 @@ import SettingsView from '@/views/dashboard/SettingsView.vue'
 import LinksDetailView from '@/views/dashboard/links/LinksDetailView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
+// Router definition
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -82,6 +83,44 @@ const router = createRouter({
       meta: { layout: 'dashboard' }
     }
   ]
+})
+
+// Auth
+router.beforeEach(async (to) => {
+  // BE url
+  const beURL = import.meta.env.VITE_BE_URL
+
+  // Authentication Route Only
+  const authenticatedOnlyRouteStartsWith = ['/dashboard']
+  if (authenticatedOnlyRouteStartsWith.some((route) => to.path.startsWith(route))) {
+    // Check if user is authenticated
+    const res = await fetch(`${beURL}/api/auth/session`, {
+      method: 'GET',
+      credentials: 'include'
+    })
+
+    if (!res.ok) {
+      // Redirect to sign-in
+      router.push('/auth/sign-in')
+      return
+    }
+  }
+
+  // Non-Authentication Route Only
+  const nonAuthenticatedOnlyRouteStartsWith = ['/auth']
+  if (nonAuthenticatedOnlyRouteStartsWith.some((route) => to.path.startsWith(route))) {
+    // Check if user is authenticated
+    const res = await fetch(`${beURL}/api/auth/session`, {
+      method: 'GET',
+      credentials: 'include'
+    })
+
+    if (res.ok) {
+      // Redirect to dashboard
+      router.push('/dashboard')
+      return
+    }
+  }
 })
 
 export default router

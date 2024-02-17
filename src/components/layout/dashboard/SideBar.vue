@@ -63,16 +63,6 @@ const currentRouteName = computed(() => route.path)
               <component :is="path.icon" class="h-5 w-5" /> {{ path.title }}
             </RouterLink>
           </li>
-
-          <!-- Sign Out -->
-          <li>
-            <button
-              class="flex w-full items-center gap-2 rounded-md p-3 font-medium text-destructive duration-300 ease-in-out hover:bg-muted"
-            >
-              <LogOut class="h-5 w-5" />
-              Sign Out
-            </button>
-          </li>
         </ul>
       </CardContent>
     </CardContainer>
