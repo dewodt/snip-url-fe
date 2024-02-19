@@ -38,7 +38,7 @@ import { RouterLink } from 'vue-router'
 const props = withDefaults(defineProps<CustomCardLinksProps>(), {
   class: ''
 })
-const getShortenedUrl = (i: number) => `https://url.dewodt.com/${props.customPath[i]}`
+const getShortenedUrl = (path: string) => `https://url.dewodt.com/${path}`
 
 // Copy state
 const isCopied = ref(false)
@@ -91,18 +91,18 @@ watch(isCopied, (newValue) => {
           <!-- Shortened url -->
           <div class="flex gap-2">
             <a
-              :href="getShortenedUrl(0)"
+              :href="getShortenedUrl(props.customPaths[0].path)"
               target="_blank"
               class="text-base text-blue-500 hover:underline hover:underline-offset-4"
             >
-              {{ getShortenedUrl(0) }}
+              {{ getShortenedUrl(props.customPaths[0].path) }}
             </a>
 
             <!-- See more -->
-            <Dialog v-if="props.customPath.length > 1">
+            <Dialog v-if="props.customPaths.length > 1">
               <DialogTrigger as-child>
                 <button class="flex">
-                  <Badge> +{{ props.customPath.length - 1 }} more </Badge>
+                  <Badge> +{{ props.customPaths.length - 1 }} more </Badge>
                 </button>
               </DialogTrigger>
               <DialogContent>
@@ -114,8 +114,12 @@ watch(isCopied, (newValue) => {
                 </DialogHeader>
                 <ScrollArea class="h-64 rounded-md border p-4">
                   <ul class="flex flex-col gap-4">
-                    <li v-for="(url, index) in props.customPath" :key="url" class="flex gap-3">
-                      <span>{{ getShortenedUrl(index) }}</span>
+                    <li
+                      v-for="(path, index) in props.customPaths"
+                      :key="path.id"
+                      class="flex gap-3"
+                    >
+                      <span>{{ getShortenedUrl(path.path) }}</span>
                       <Badge v-if="index === 0" variant="green"> Latest </Badge>
                     </li>
                   </ul>
@@ -139,13 +143,13 @@ watch(isCopied, (newValue) => {
           <div class="flex gap-1">
             <BarChart2 class="size-5" />
             <RouterLink :to="`/dashboard/links/${props.id}`" class="text-sm">
-              {{ props.engagements }} engagements
+              {{ props.requestCount }} engagements
             </RouterLink>
           </div>
           <div class="flex gap-1">
             <Calendar class="size-5" />
             <p class="text-sm">
-              {{ props.createdAt.toLocaleString('en-US', { dateStyle: 'long' }) }}
+              {{ new Date(props.createdAt).toLocaleString('en-US', { dateStyle: 'long' }) }}
             </p>
           </div>
         </div>
@@ -161,7 +165,7 @@ watch(isCopied, (newValue) => {
       <ScnButton
         variant="secondary"
         class="flex-auto sm:flex-initial"
-        @click="handleCopy(getShortenedUrl(0))"
+        @click="handleCopy(getShortenedUrl(props.customPaths[0].path))"
       >
         <CopyIcon class="mr-2 size-5" /> {{ isCopied ? 'Copied' : 'Copy' }}
       </ScnButton>

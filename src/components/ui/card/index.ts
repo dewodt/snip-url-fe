@@ -1,3 +1,5 @@
+import type { LinksResponse } from '@/types/api'
+
 export { default as CardContainer } from './CardContainer.vue'
 export { default as CardHeader } from './CardHeader.vue'
 export { default as CardTitle } from './CardTitle.vue'
@@ -8,13 +10,7 @@ export { default as CustomCardLinks } from './CustomCardLinks.vue'
 export { default as CustomCardLinksDetail } from './CustomCardLinksDetail.vue'
 
 // CustomCardLinks
-export interface CustomCardLinksProps {
-  id: string
-  title: string
-  customPath: string[]
-  destinationUrl: string
-  engagements: number
-  createdAt: Date
+export interface CustomCardLinksProps extends LinksResponse {
   class: string
 }
 

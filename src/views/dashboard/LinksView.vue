@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import CustomCardLinksLoading from '@/components/loading/CustomCardLinksLoading.vue'
 import { CardContainer, CardContent, CardHeader, CustomCardLinks } from '@/components/ui/card'
+import { type LinksResponse } from '@/types/api'
+import { QueryClient, useQuery } from '@tanstack/vue-query'
 import { useHead } from '@unhead/vue'
 import { LinkIcon } from 'lucide-vue-next'
-import { ref } from 'vue'
 
 // Add custom metatags for current page
 useHead({
@@ -19,100 +21,38 @@ useHead({
   ]
 })
 
-// Template data
-const data = ref([
-  {
-    id: '1',
-    title: 'This is title 1',
-    customPath: [
-      'url1',
-      'url11',
-      'url12',
-      'url13',
-      'url14',
-      'url15',
-      'url16',
-      'url17',
-      'url18',
-      'url19'
-    ],
-    destinationUrl: 'https://www.google.com',
-    engagements: 100,
-    createdAt: new Date(2021, 10, 10)
-  },
-  {
-    id: '2',
-    title: 'This is title 2',
-    customPath: ['url2', 'url21', 'url22'],
-    destinationUrl: 'https://www.google.com',
-    engagements: 100,
-    createdAt: new Date(2021, 10, 11)
-  },
-  {
-    id: '3',
-    title: 'This is title 3',
-    customPath: ['url3'],
-    destinationUrl: 'https://www.google.com',
-    engagements: 100,
-    createdAt: new Date(2021, 10, 12)
-  },
-  {
-    id: '4',
-    title: 'This is title 4',
-    customPath: ['url4'],
-    destinationUrl: 'https://www.google.com',
-    engagements: 100,
-    createdAt: new Date(2021, 10, 13)
-  },
-  {
-    id: '5',
-    title: 'This is title 5',
-    customPath: ['url5'],
-    destinationUrl: 'https://www.google.com',
-    engagements: 100,
-    createdAt: new Date(2021, 10, 14)
-  },
-  {
-    id: '6',
-    title: 'This is title 6',
-    customPath: ['url6'],
-    destinationUrl: 'https://www.google.com',
-    engagements: 100,
-    createdAt: new Date(2021, 10, 15)
-  },
-  {
-    id: '7',
-    title: 'This is title 7',
-    customPath: ['url7'],
-    destinationUrl: 'https://www.google.com',
-    engagements: 100,
-    createdAt: new Date(2021, 10, 16)
-  },
-  {
-    id: '8',
-    title: 'This is title 8',
-    customPath: ['url8'],
-    destinationUrl: 'https://www.google.com',
-    engagements: 100,
-    createdAt: new Date(2021, 10, 17)
-  },
-  {
-    id: '9',
-    title: 'This is title 9',
-    customPath: ['url9'],
-    destinationUrl: 'https://www.google.com',
-    engagements: 100,
-    createdAt: new Date(2021, 10, 18)
-  },
-  {
-    id: '10',
-    title: 'This is title 10',
-    customPath: ['url10'],
-    destinationUrl: 'https://www.google.com',
-    engagements: 100,
-    createdAt: new Date(2021, 10, 19)
+// Backend URL
+const beURL = import.meta.env.VITE_BE_URL
+
+// Initialize query client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity
+    }
   }
-])
+})
+
+// Fetch data
+const { data, isLoading } = useQuery(
+  {
+    queryKey: ['session'],
+    queryFn: async () => {
+      const res = await fetch(`${beURL}/api/link`, {
+        method: 'GET',
+        credentials: 'include'
+      })
+
+      if (!res.ok) {
+        return null
+      }
+
+      const resJSON = (await res.json()) as LinksResponse[]
+      return resJSON
+    }
+  },
+  queryClient
+)
 </script>
 
 <template>
@@ -126,9 +66,16 @@ const data = ref([
       </CardHeader>
       <CardContent>
         <!-- Links -->
-        <ul class="flex flex-col gap-6">
+        <ul v-if="!isLoading" class="flex flex-col gap-6">
           <li v-for="item in data" :key="item.id">
             <CustomCardLinks v-bind="item" />
+          </li>
+        </ul>
+
+        <!-- Loading -->
+        <ul v-else class="flex flex-col gap-6">
+          <li v-for="i in 5" :key="i">
+            <CustomCardLinksLoading />
           </li>
         </ul>
       </CardContent>
