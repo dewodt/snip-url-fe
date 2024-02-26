@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<{ class: string }>(), {
   <div
     :class="
       cn(
-        'flex flex-col gap-4 rounded-lg border bg-card p-4 shadow-lg lg:flex-row lg:justify-between lg:p-5',
+        'flex h-fit flex-col gap-4 rounded-lg border bg-card p-6 shadow-lg lg:flex-row lg:justify-between',
         props.class
       )
     "
