@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import type { DateChartData, ChartProps } from '.'
+import type { Last4WeeksChartData, ChartProps } from '.'
 import { StackedBar } from '@unovis/ts'
 import { VisAxis, VisStackedBar, VisTooltip, VisXYContainer } from '@unovis/vue'
 
-const props = defineProps<ChartProps<DateChartData>>()
-const x = (d: DateChartData[number]) => d.date
-const y = (d: DateChartData[number]) => d.count
+const props = defineProps<ChartProps<Last4WeeksChartData>>()
+const x = (d: Last4WeeksChartData[number]) => new Date(d.date)
+const y = (d: Last4WeeksChartData[number]) => d.count
 const triggers = {
-  [StackedBar.selectors.bar]: (d: DateChartData[number]) =>
+  [StackedBar.selectors.bar]: (d: Last4WeeksChartData[number]) =>
     `<span>
-      <span class="font-semibold">Date:</span>  ${Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(d.date)}
+      <span class="font-semibold">Date:</span>  ${Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(new Date(d.date))}
       <br/>
       <span class="font-semibold">Engagement:</span> ${d.count}
     </span>`
@@ -27,10 +27,11 @@ const triggers = {
       :num-ticks="5"
       :grid-line="false"
       :tick-line="true"
-      :tick-format="
-        (value: Date) => Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(value)
-      "
       :domain-line="true"
+      :tick-format="
+        (value: string) =>
+          Intl.DateTimeFormat('en-US', { dateStyle: 'short' }).format(new Date(value))
+      "
       color="#888888"
     />
 

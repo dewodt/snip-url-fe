@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import type { CustomCardLocationStatsProps } from '.'
-import { Progress } from '../progress'
 import { CardContainer, CardContent, CardHeader } from '@/components/ui/card'
+import { Progress } from '@/components/ui/progress'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
+import type { LinkDetailResponse } from '@/types/api'
 
-const props = withDefaults(defineProps<CustomCardLocationStatsProps>(), { class: '' })
+interface CardLocationProps {
+  class: string
+  data: LinkDetailResponse['countries']
+}
+
+const props = withDefaults(defineProps<CardLocationProps>(), { class: '' })
 </script>
 <template>
   <CardContainer :class="cn('shadow-lg', props.class)">
@@ -25,14 +30,14 @@ const props = withDefaults(defineProps<CustomCardLocationStatsProps>(), { class:
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in props.data" :key="item.id">
+            <tr v-for="(item, index) in props.data" :key="index">
               <td class="py-2 pr-2">{{ index + 1 }}</td>
               <td class="px-2 py-2">{{ item.country }}</td>
               <td class="hidden px-2 py-2 sm:block">
                 <Progress class="w-64" :model-value="item.percentage" />
               </td>
-              <td class="px-2 py-2 text-center">{{ item.engagements }}</td>
-              <td class="py-2 pl-2">{{ item.percentage }}</td>
+              <td class="px-2 py-2 text-center">{{ item.count }}</td>
+              <td class="py-2 pl-2">{{ item.percentage.toFixed(1) }}</td>
             </tr>
           </tbody>
         </table>

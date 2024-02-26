@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import CustomCardLinksLoading from '@/components/loading/CustomCardLinksLoading.vue'
-import { CardContainer, CardContent, CardHeader, CustomCardLinks } from '@/components/ui/card'
+import { CardLinks } from '@/components/custom-cards'
+import LinksViewLoading from '@/components/loading/LinksViewLoading.vue'
+import { CardContainer, CardContent, CardHeader } from '@/components/ui/card'
 import { type LinksResponse } from '@/types/api'
 import { QueryClient, useQuery } from '@tanstack/vue-query'
 import { useHead } from '@unhead/vue'
@@ -36,7 +37,7 @@ const queryClient = new QueryClient({
 // Fetch data
 const { data, isLoading } = useQuery(
   {
-    queryKey: ['session'],
+    queryKey: ['link'],
     queryFn: async () => {
       const res = await fetch(`${beURL}/api/link`, {
         method: 'GET',
@@ -56,7 +57,11 @@ const { data, isLoading } = useQuery(
 </script>
 
 <template>
-  <main className="w-full">
+  <!-- Loading view -->
+  <LinksViewLoading v-if="isLoading" />
+
+  <!-- Done view -->
+  <main v-else className="w-full">
     <CardContainer class="shadow-lg">
       <CardHeader>
         <div class="flex flex-row items-center gap-2">
@@ -66,16 +71,9 @@ const { data, isLoading } = useQuery(
       </CardHeader>
       <CardContent>
         <!-- Links -->
-        <ul v-if="!isLoading" class="flex flex-col gap-6">
+        <ul class="flex flex-col gap-6">
           <li v-for="item in data" :key="item.id">
-            <CustomCardLinks v-bind="item" />
-          </li>
-        </ul>
-
-        <!-- Loading -->
-        <ul v-else class="flex flex-col gap-6">
-          <li v-for="i in 5" :key="i">
-            <CustomCardLinksLoading />
+            <CardLinks v-bind="item" />
           </li>
         </ul>
       </CardContent>

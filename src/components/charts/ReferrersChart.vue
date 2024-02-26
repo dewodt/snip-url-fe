@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import type { StringChartData, ChartProps } from '.'
+import type { ReffererChartData, ChartProps } from '.'
 import { Donut } from '@unovis/ts'
 import type { DonutDatum } from '@unovis/ts/components/donut/types'
 import { VisSingleContainer, VisTooltip, VisDonut, VisBulletLegend } from '@unovis/vue'
 
-const props = defineProps<ChartProps<StringChartData>>()
+const props = defineProps<ChartProps<ReffererChartData>>()
 
-const value = (d: StringChartData[number]) => d.count
+const value = (d: ReffererChartData[number]) => d.count
 const triggers = {
   [Donut.selectors.segment]: (d: any) =>
     `<span>
-      <span class="font-semibold">Referrer:</span> ${d.data.label}
+      <span class="font-semibold">Referrer:</span> ${d.data.referrer}
       <br/>
       <span class="font-semibold">Count:</span> ${d.data.count}
     </span>`
 }
 const items = props.data.map((d) => {
-  return { name: d.label }
+  return { name: d.referrer }
 })
 const sortFunction = (
-  a: DonutDatum<StringChartData[number]>,
-  b: DonutDatum<StringChartData[number]>
+  a: DonutDatum<ReffererChartData[number]>,
+  b: DonutDatum<ReffererChartData[number]>
 ) => {
   return a.datum.count - b.datum.count
 }

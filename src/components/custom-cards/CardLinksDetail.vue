@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { CustomCardLinksProps } from '.'
 import UpdateForm from '@/components/forms/UpdateForm.vue'
 import { AvatarContainer, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
@@ -21,6 +20,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area'
 import ScnSeparator from '@/components/ui/separator/ScnSeparator.vue'
 import { cn } from '@/lib/utils'
+import type { LinkDetailResponse } from '@/types/api'
 import {
   BarChart2,
   Calendar,
@@ -33,11 +33,16 @@ import {
 import { ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 
+interface CardLinksDetailProps extends LinkDetailResponse {
+  class: string
+}
+
 // Props
-const props = withDefaults(defineProps<CustomCardLinksProps>(), {
+const props = withDefaults(defineProps<CardLinksDetailProps>(), {
   class: ''
 })
-const getShortenedUrl = (i: number) => `https://url.dewodt.com/${props.customPath[i]}`
+
+const getShortenedUrl = (i: number) => `https://url.dewodt.com/${props.customPaths[i].path}`
 
 // Copy state
 const isCopied = ref(false)
@@ -98,10 +103,10 @@ watch(isCopied, (newValue) => {
             </a>
 
             <!-- See more -->
-            <Dialog v-if="props.customPath.length > 1">
+            <Dialog v-if="props.customPaths.length > 1">
               <DialogTrigger as-child>
                 <button class="flex">
-                  <Badge> +{{ props.customPath.length - 1 }} more </Badge>
+                  <Badge> +{{ props.customPaths.length - 1 }} more </Badge>
                 </button>
               </DialogTrigger>
               <DialogContent>
@@ -113,7 +118,7 @@ watch(isCopied, (newValue) => {
                 </DialogHeader>
                 <ScrollArea class="h-64 rounded-md border p-4">
                   <ul class="flex flex-col gap-4">
-                    <li v-for="(url, index) in props.customPath" :key="url" class="flex gap-3">
+                    <li v-for="(url, index) in props.customPaths" :key="url.id" class="flex gap-3">
                       <span>{{ getShortenedUrl(index) }}</span>
                       <Badge v-if="index === 0" variant="green"> Latest </Badge>
                     </li>
@@ -138,13 +143,13 @@ watch(isCopied, (newValue) => {
           <div class="flex gap-1">
             <BarChart2 class="size-5" />
             <RouterLink :to="`/dashboard/links/${props.id}`" class="text-sm">
-              {{ props.engagements }} engagements
+              {{ props.totalRequests }} engagements
             </RouterLink>
           </div>
           <div class="flex gap-1">
             <Calendar class="size-5" />
             <p class="text-sm">
-              {{ props.createdAt.toLocaleString('en-US', { dateStyle: 'long' }) }}
+              {{ new Date(props.createdAt).toLocaleString('en-US', { dateStyle: 'long' }) }}
             </p>
           </div>
         </div>
@@ -172,7 +177,7 @@ watch(isCopied, (newValue) => {
             <PencilIcon class="size-5" />
           </ScnButton>
         </DialogTrigger>
-        <DialogContent :onOpenAutoFocus="(e) => e.preventDefault()">
+        <DialogContent :onOpenAutoFocus="(e: Event) => e.preventDefault()">
           <DialogHeader>
             <DialogTitle class="text-2xl">Update link</DialogTitle>
             <DialogDescription>

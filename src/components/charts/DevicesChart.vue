@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import type { StringChartData, ChartProps } from '.'
+import type { DeviceChartData, ChartProps } from '.'
 import { Donut } from '@unovis/ts'
 import type { DonutDatum } from '@unovis/ts/components/donut/types'
 import { VisSingleContainer, VisTooltip, VisDonut, VisBulletLegend } from '@unovis/vue'
 
-const props = defineProps<ChartProps<StringChartData>>()
+const props = defineProps<ChartProps<DeviceChartData>>()
 
-const value = (d: StringChartData[number]) => d.count
+const value = (d: DeviceChartData[number]) => d.count
 const triggers = {
   [Donut.selectors.segment]: (d: any) =>
     `<span>
-      <span class="font-semibold">Device:</span> ${d.data.label}
+      <span class="font-semibold">Device:</span> ${d.data.device}
       <br/>
       <span class="font-semibold">Count:</span> ${d.data.count}
     </span>`
 }
 const items = props.data.map((d) => {
-  return { name: d.label }
+  return { name: d.device }
 })
 const sortFunction = (
-  a: DonutDatum<StringChartData[number]>,
-  b: DonutDatum<StringChartData[number]>
+  a: DonutDatum<DeviceChartData[number]>,
+  b: DonutDatum<DeviceChartData[number]>
 ) => {
   return a.datum.count - b.datum.count
 }

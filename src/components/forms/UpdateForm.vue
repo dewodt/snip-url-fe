@@ -1,15 +1,21 @@
 <script setup lang="ts">
-import type { CustomCardLinksProps } from '../ui/card'
 import ScnButton from '@/components/ui/button/ScnButton.vue'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { ScnInput } from '@/components/ui/input'
 import { createUpdateSchema } from '@/lib/zod'
+import type { CustomPaths } from '@/types/api'
 import { toTypedSchema } from '@vee-validate/zod'
 import { Loader2, SlashIcon } from 'lucide-vue-next'
 import { useForm } from 'vee-validate'
 
+interface UpdateFormProps {
+  title: string
+  customPaths: CustomPaths[]
+  destinationUrl: string
+}
+
 // Get default values from props
-const props = defineProps<CustomCardLinksProps>()
+const props = defineProps<UpdateFormProps>()
 
 // Form schema
 const formSchema = toTypedSchema(createUpdateSchema)
@@ -19,7 +25,7 @@ const form = useForm({
   validationSchema: formSchema,
   initialValues: {
     title: props.title,
-    customPath: props.customPath[0]
+    customPath: props.customPaths[0].path
   }
 })
 
