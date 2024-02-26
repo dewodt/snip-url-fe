@@ -7,7 +7,7 @@ import type { LinkDetailResponse } from '@/types/api'
 
 interface CardLocationProps {
   class: string
-  data: LinkDetailResponse['countries']
+  data: LinkDetailResponse['countries'] | undefined
 }
 
 const props = withDefaults(defineProps<CardLocationProps>(), { class: '' })
@@ -30,7 +30,15 @@ const props = withDefaults(defineProps<CardLocationProps>(), { class: '' })
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in props.data" :key="index">
+            <!-- Data is empty -->
+            <tr v-if="!props.data">
+              <td colspan="5">
+                <p class="text-center text-muted-foreground">Data is not available</p>
+              </td>
+            </tr>
+
+            <!-- Data is not empty -->
+            <tr v-else v-for="(item, index) in props.data" :key="index">
               <td class="py-2 pr-2">{{ index + 1 }}</td>
               <td class="px-2 py-2">{{ item.country }}</td>
               <td class="hidden px-2 py-2 sm:block">

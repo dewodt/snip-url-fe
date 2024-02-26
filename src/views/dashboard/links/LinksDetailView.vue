@@ -98,7 +98,8 @@ const { data, isLoading } = useQuery(
       </template>
       <template v-slot:card-content>
         <ScrollArea class="w-full">
-          <Last4WeeksChart :data="data?.last4Weeks" />
+          <Last4WeeksChart v-if="data && data.last4Weeks" :data="data.last4Weeks" />
+          <p v-else class="text-base text-muted-foreground">Data is not available</p>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
       </template>
@@ -113,7 +114,10 @@ const { data, isLoading } = useQuery(
         <h3 class="text-base font-semibold text-primary">Referrers</h3>
       </template>
       <template v-slot:card-content>
-        <ReferrersChart :data="data?.referrers" />
+        <div v-if="data && data.referrers && data.referrers.length">
+          <ReferrersChart :data="data.referrers" />
+        </div>
+        <p v-else class="text-base text-muted-foreground">Data is not available</p>
       </template>
     </CardAnalytics>
 
@@ -123,7 +127,8 @@ const { data, isLoading } = useQuery(
         <h3 class="text-base font-semibold text-primary">Devices</h3>
       </template>
       <template v-slot:card-content>
-        <DevicesChart :data="data?.devices" />
+        <DevicesChart v-if="data && data.devices && data.referrers.length" :data="data.devices" />
+        <p v-else class="text-base text-muted-foreground">Data is not available</p>
       </template>
     </CardAnalytics>
   </main>

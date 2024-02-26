@@ -14,14 +14,12 @@ const props = withDefaults(defineProps<CardAnalyticsProps>(), {
 </script>
 
 <template>
-  <CardContainer :class="cn('shadow-lg', props.class)">
+  <CardContainer :class="cn('flex flex-col shadow-lg', props.class)">
     <CardHeader class="px-6 pb-2 pt-6">
       <slot name="card-header"> </slot>
-      <!-- <h3 class="text-base font-semibold text-primary">Last 7 Days</h3> -->
     </CardHeader>
-    <CardContent>
+    <CardContent class="flex flex-auto">
       <slot name="card-content"></slot>
-      <!-- <p class="text-xl font-bold">69</p> -->
     </CardContent>
   </CardContainer>
 </template>
