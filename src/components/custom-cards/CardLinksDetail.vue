@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import UpdateForm from '@/components/forms/UpdateForm.vue'
+import UpdateFormDialog from '../forms/UpdateFormDialog.vue'
 import { AvatarContainer, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import ScnButton from '@/components/ui/button/ScnButton.vue'
@@ -27,7 +27,6 @@ import {
   CopyIcon,
   GlobeIcon,
   MoreHorizontal,
-  PencilIcon,
   Trash2Icon
 } from 'lucide-vue-next'
 import { ref, watch } from 'vue'
@@ -42,7 +41,9 @@ const props = withDefaults(defineProps<CardLinksDetailProps>(), {
   class: ''
 })
 
-const getShortenedUrl = (i: number) => `https://url.dewodt.com/${props.customPaths[i].path}`
+const getShortenedUrl = (path: string) => `https://url.dewodt.com/${path}`
+const latestPathIdx = props.customPaths.length - 1
+const latestPath = props.customPaths[latestPathIdx].path
 
 // Copy state
 const isCopied = ref(false)
@@ -95,11 +96,11 @@ watch(isCopied, (newValue) => {
           <!-- Shortened url -->
           <div class="flex gap-2">
             <a
-              :href="getShortenedUrl(0)"
+              :href="getShortenedUrl(latestPath)"
               target="_blank"
               class="text-base text-blue-500 hover:underline hover:underline-offset-4"
             >
-              {{ getShortenedUrl(0) }}
+              {{ getShortenedUrl(latestPath) }}
             </a>
 
             <!-- See more -->
@@ -118,8 +119,12 @@ watch(isCopied, (newValue) => {
                 </DialogHeader>
                 <ScrollArea class="h-64 rounded-md border p-4">
                   <ul class="flex flex-col gap-4">
-                    <li v-for="(url, index) in props.customPaths" :key="url.id" class="flex gap-3">
-                      <span>{{ getShortenedUrl(index) }}</span>
+                    <li
+                      v-for="(path, index) in props.customPaths.slice().reverse()"
+                      :key="path.id"
+                      class="flex gap-3"
+                    >
+                      <span>{{ getShortenedUrl(props.customPaths[index].path) }}</span>
                       <Badge v-if="index === 0" variant="green"> Latest </Badge>
                     </li>
                   </ul>
@@ -165,30 +170,18 @@ watch(isCopied, (newValue) => {
       <ScnButton
         variant="secondary"
         class="flex-auto sm:flex-initial"
-        @click="handleCopy(getShortenedUrl(0))"
+        @click="handleCopy(getShortenedUrl(latestPath))"
       >
         <CopyIcon class="mr-2 size-5" /> {{ isCopied ? 'Copied' : 'Copy' }}
       </ScnButton>
 
       <!-- Edit -->
-      <Dialog>
-        <DialogTrigger as-child>
-          <ScnButton variant="outline" size="icon">
-            <PencilIcon class="size-5" />
-          </ScnButton>
-        </DialogTrigger>
-        <DialogContent :onOpenAutoFocus="(e: Event) => e.preventDefault()">
-          <DialogHeader>
-            <DialogTitle class="text-2xl">Update link</DialogTitle>
-            <DialogDescription>
-              Updated custom path will be the latest shortened url
-            </DialogDescription>
-          </DialogHeader>
-          <div>
-            <UpdateForm v-bind="props" />
-          </div>
-        </DialogContent>
-      </Dialog>
+      <UpdateFormDialog
+        :id="props.id"
+        :title="props.title"
+        :custom-path="latestPath"
+        :destination-url="props.destinationUrl"
+      />
 
       <!-- More -->
       <DropdownMenu>

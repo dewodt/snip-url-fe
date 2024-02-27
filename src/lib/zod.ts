@@ -12,12 +12,24 @@ export const signUpSchema = z.object({
 })
 
 // Create new schema
-export const createUpdateSchema = z.object({
+export const createSchema = z.object({
   title: z.string({ required_error: 'Title is required' }).min(1, 'Title is required'),
   destinationUrl: z
     .string({ required_error: 'Destination URL is required' })
     .min(1, 'Destination URL is required')
     .url('Invalid Destination URL'),
+  customPath: z
+    .string({ required_error: 'Custom path is required' })
+    .min(1, 'Custom path is required')
+    .regex(
+      /^[^~<>;':"/\\[\]^{}()=+!*@&$?%#|]+$/,
+      'The characters `~,<>;:\'"/\\[\\]^{}()=+!*@&$?%#|` are not allowed'
+    )
+})
+
+// Update chema
+export const updateSchema = z.object({
+  title: z.string({ required_error: 'Title is required' }).min(1, 'Title is required'),
   customPath: z
     .string({ required_error: 'Custom path is required' })
     .min(1, 'Custom path is required')

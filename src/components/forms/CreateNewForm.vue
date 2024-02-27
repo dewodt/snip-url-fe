@@ -3,7 +3,7 @@ import ScnButton from '@/components/ui/button/ScnButton.vue'
 import { CardContainer, CardContent, CardHeader } from '@/components/ui/card'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { ScnInput } from '@/components/ui/input'
-import { createUpdateSchema } from '@/lib/zod'
+import { createSchema } from '@/lib/zod'
 import router from '@/router'
 import { toTypedSchema } from '@vee-validate/zod'
 import { Loader2, PlusCircle, SlashIcon } from 'lucide-vue-next'
@@ -11,7 +11,7 @@ import { useForm } from 'vee-validate'
 import { toast } from 'vue-sonner'
 
 // Form schema
-const formSchema = toTypedSchema(createUpdateSchema)
+const formSchema = toTypedSchema(createSchema)
 
 // Form hooks
 const form = useForm({
