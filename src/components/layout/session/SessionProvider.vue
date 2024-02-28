@@ -1,20 +1,10 @@
 <script setup lang="ts">
 import { injectSessionKey } from './session'
 import type { Session, SessionProviderProps } from './session'
-import { QueryClient, useQuery } from '@tanstack/vue-query'
+import { queryClient } from '@/lib/query'
+import { beURL } from '@/lib/url'
+import { useQuery } from '@tanstack/vue-query'
 import { provide } from 'vue'
-
-// Initialize query client
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: Infinity
-    }
-  }
-})
-
-// Backend URL
-const beURL = import.meta.env.VITE_BE_URL
 
 // Query
 const { data, isLoading, refetch } = useQuery(

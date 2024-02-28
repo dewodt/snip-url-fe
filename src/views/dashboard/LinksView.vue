@@ -2,8 +2,10 @@
 import { CardLinks } from '@/components/custom-cards'
 import LinksViewLoading from '@/components/loading/LinksViewLoading.vue'
 import { CardContainer, CardContent, CardHeader } from '@/components/ui/card'
+import { queryClient } from '@/lib/query'
+import { beURL } from '@/lib/url'
 import { type LinksResponse } from '@/types/api'
-import { QueryClient, useQuery } from '@tanstack/vue-query'
+import { useQuery } from '@tanstack/vue-query'
 import { useHead } from '@unhead/vue'
 import { LinkIcon } from 'lucide-vue-next'
 
@@ -20,18 +22,6 @@ useHead({
       content: 'Links | Snip URL'
     }
   ]
-})
-
-// Backend URL
-const beURL = import.meta.env.VITE_BE_URL
-
-// Initialize query client
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: Infinity
-    }
-  }
 })
 
 // Fetch data

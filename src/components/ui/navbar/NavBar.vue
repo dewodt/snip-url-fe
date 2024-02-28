@@ -10,6 +10,7 @@ import {
 } from '../dropdown-menu'
 import { useSession } from '@/components/layout/session/session'
 import { useTheme } from '@/components/layout/theme/theme'
+import { beURL } from '@/lib/url'
 import { cn } from '@/lib/utils'
 import { LogOut, Menu, MoonStar, SettingsIcon, Sun, UserCircle2, X } from 'lucide-vue-next'
 import { DropdownMenuTrigger } from 'radix-vue'
@@ -47,7 +48,6 @@ const { session, isLoading } = useSession()
 
 // On signout
 const onSignOut = () => {
-  const beURL = import.meta.env.VITE_BE_URL
   fetch(`${beURL}/api/auth/sign-out`, {
     method: 'GET',
     credentials: 'include'

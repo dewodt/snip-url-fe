@@ -5,8 +5,10 @@ import ReferrersChart from '@/components/charts/ReferrersChart.vue'
 import { CardAnalytics, CardLinksDetail, CardCountry } from '@/components/custom-cards'
 import LinksDetailViewLoading from '@/components/loading/LinksDetailViewLoading.vue'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { queryClient } from '@/lib/query'
+import { beURL } from '@/lib/url'
 import type { LinkDetailResponse } from '@/types/api'
-import { QueryClient, useQuery } from '@tanstack/vue-query'
+import { useQuery } from '@tanstack/vue-query'
 import { useHead } from '@unhead/vue'
 import { useRoute } from 'vue-router'
 
@@ -26,18 +28,6 @@ useHead({
       content: `Links ID ${id} | Snip URL`
     }
   ]
-})
-
-// Fetch data
-const beURL = import.meta.env.VITE_BE_URL as string
-
-// Initialize query client
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: Infinity
-    }
-  }
 })
 
 // Fetch data

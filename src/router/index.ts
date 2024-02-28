@@ -1,5 +1,6 @@
 import HomeView from '../views/HomeView.vue'
 import LinksView from '../views/dashboard/LinksView.vue'
+import { beURL, feURL } from './../lib/url'
 import AboutView from '@/views/AboutView.vue'
 import PrivacyPolicyView from '@/views/PrivacyPolicyView.vue'
 import ErrorView from '@/views/auth/ErrorView.vue'
@@ -13,7 +14,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 // Router definition
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(feURL),
   routes: [
     {
       path: '/',
@@ -87,9 +88,6 @@ const router = createRouter({
 
 // Auth
 router.beforeEach(async (to) => {
-  // BE url
-  const beURL = import.meta.env.VITE_BE_URL
-
   // Authentication Route Only
   const authenticatedOnlyRouteStartsWith = ['/dashboard']
   if (authenticatedOnlyRouteStartsWith.some((route) => to.path.startsWith(route))) {

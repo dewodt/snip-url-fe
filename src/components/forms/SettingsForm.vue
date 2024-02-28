@@ -5,6 +5,7 @@ import { CardContainer, CardContent, CardHeader } from '../ui/card'
 import ScnButton from '@/components/ui/button/ScnButton.vue'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { ScnInput } from '@/components/ui/input'
+import { beURL } from '@/lib/url'
 import { cn } from '@/lib/utils'
 import { avatarSchema, settingsSchema } from '@/lib/zod'
 import { toTypedSchema } from '@vee-validate/zod'
@@ -35,9 +36,6 @@ const isUploadingImage = ref(false)
 const toggleIsUploadingImage = () => {
   isUploadingImage.value = !isUploadingImage.value
 }
-
-// Get BE URL
-const beURL = import.meta.env.VITE_BE_URL
 
 // Upload avatar handler
 const onUploadAvatar = async (e: Event) => {

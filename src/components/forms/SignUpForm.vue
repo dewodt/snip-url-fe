@@ -6,6 +6,7 @@ import ScnButton from '@/components/ui/button/ScnButton.vue'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { ScnInput } from '@/components/ui/input'
 import { ScnSeparator } from '@/components/ui/separator'
+import { beURL } from '@/lib/url'
 import { signUpSchema } from '@/lib/zod'
 import router from '@/router'
 import { toTypedSchema } from '@vee-validate/zod'
@@ -20,9 +21,6 @@ const formSchema = toTypedSchema(signUpSchema)
 const form = useForm({
   validationSchema: formSchema
 })
-
-// Get backend URL
-const beURL = import.meta.env.VITE_BE_URL
 
 // Submit handler
 const onSubmit = form.handleSubmit(async (values) => {

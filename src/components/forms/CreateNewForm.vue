@@ -3,6 +3,7 @@ import ScnButton from '@/components/ui/button/ScnButton.vue'
 import { CardContainer, CardContent, CardHeader } from '@/components/ui/card'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { ScnInput } from '@/components/ui/input'
+import { beURL } from '@/lib/url'
 import { createSchema } from '@/lib/zod'
 import router from '@/router'
 import { toTypedSchema } from '@vee-validate/zod'
@@ -30,8 +31,7 @@ const onSubmit = form.handleSubmit(async (values) => {
   toast.loading('Loading', { description: 'Please wait...' })
 
   // Submit form data
-  const beUrl = import.meta.env.VITE_BE_URL
-  const res = await fetch(`${beUrl}/api/link`, {
+  const res = await fetch(`${beURL}/api/link`, {
     method: 'POST',
     body: formData,
     credentials: 'include'

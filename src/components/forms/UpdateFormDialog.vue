@@ -10,7 +10,10 @@ import {
 } from '@/components/ui/dialog'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { ScnInput } from '@/components/ui/input'
+import { queryClient } from '@/lib/query'
+import { beURL } from '@/lib/url'
 import { updateSchema } from '@/lib/zod'
+import { useMutation } from '@tanstack/vue-query'
 import { toTypedSchema } from '@vee-validate/zod'
 import { Loader2, PencilIcon, SlashIcon } from 'lucide-vue-next'
 import { useForm } from 'vee-validate'
@@ -24,12 +27,25 @@ interface UpdateFormProps {
   destinationUrl: string
 }
 
+interface FormDataUpdateValues {
+  title: string
+  customPath: string
+}
+
+interface SuccessUpdateResponse {
+  message: string
+}
+
+interface ErrorUpdateResponse {
+  field: keyof FormDataUpdateValues
+  error: string
+}
+
 // Get default values from props
 const props = defineProps<UpdateFormProps>()
 
 // Form schema
 const formSchema = toTypedSchema(updateSchema)
-
 // Form hooks
 const form = useForm({
   validationSchema: formSchema,
@@ -53,37 +69,43 @@ const toggleOpen = () => {
   }
 }
 
-// Get be url
-const beUrl = import.meta.env.VITE_BE_URL
+// Use mutation hook
+const { mutate } = useMutation<SuccessUpdateResponse, ErrorUpdateResponse, FormDataUpdateValues>({
+  mutationFn: async (values) => {
+    // Create form data
+    const formData = new FormData()
+    formData.append('title', values.title)
+    formData.append('customPath', values.customPath)
 
-// Submit handler
-const onSubmit = form.handleSubmit(async (values) => {
-  // Create form data
-  const formData = new FormData()
-  formData.append('title', values.title)
-  formData.append('customPath', values.customPath)
+    // Submit form
+    toast.loading('Loading', { description: 'Please wait...' })
 
-  // Submit form
-  toast.loading('Loading', { description: 'Please wait...' })
+    const res = await fetch(`${beURL}/api/link/${props.id}`, {
+      method: 'PUT',
+      body: formData,
+      credentials: 'include'
+    })
+    const resJSON = await res.json()
 
-  const res = await fetch(`${beUrl}/api/link/${props.id}`, {
-    method: 'PUT',
-    body: formData,
-    credentials: 'include'
-  })
-  const data = await res.json()
+    // Error
+    if (!res.ok) {
+      resJSON.field && form.setFieldError(resJSON.field, resJSON.error)
+      toast.error('Error', { description: resJSON.error })
+      return resJSON
+    }
 
-  // Handle response
-  if (res.ok) {
+    // Success
     toggleOpen()
     toast.success('Success', { description: 'URL updated successfully' })
-    return
-  } else {
-    form.setFieldError(data.field, data.error)
-    toast.error('Error', { description: data.error })
-    return
+    await queryClient.refetchQueries({ queryKey: ['link'] })
+    await queryClient.refetchQueries({ queryKey: ['link', props.id] })
+
+    return resJSON
   }
 })
+
+// Submit handler
+const onSubmit = form.handleSubmit((values) => mutate(values))
 </script>
 
 <template>
