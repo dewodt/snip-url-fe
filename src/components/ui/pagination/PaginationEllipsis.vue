@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { type HTMLAttributes, computed } from 'vue'
-import { PaginationEllipsis, type PaginationEllipsisProps } from 'radix-vue'
-import { MoreHorizontal } from 'lucide-vue-next'
 import { cn } from '@/lib/utils'
+import { MoreHorizontal } from 'lucide-vue-next'
+import { PaginationEllipsis, type PaginationEllipsisProps } from 'radix-vue'
+import { type HTMLAttributes, computed } from 'vue'
 
 const props = defineProps<PaginationEllipsisProps & { class?: HTMLAttributes['class'] }>()
 
@@ -14,7 +14,10 @@ const delegatedProps = computed(() => {
 </script>
 
 <template>
-  <PaginationEllipsis v-bind="delegatedProps" :class="cn('w-9 h-9 flex items-center justify-center', props.class)">
+  <PaginationEllipsis
+    v-bind="delegatedProps"
+    :class="cn('flex h-9 w-9 items-center justify-center', props.class)"
+  >
     <slot>
       <MoreHorizontal />
     </slot>
