@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ScnButton from '@/components/ui/button/ScnButton.vue'
+import Button from '@/components/ui/button/Button.vue'
 import {
   Dialog,
   DialogContent,
@@ -9,7 +9,7 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { ScnInput } from '@/components/ui/input'
+import { Input } from '@/components/ui/input'
 import { queryClient } from '@/lib/query'
 import { beURL } from '@/lib/url'
 import { updateSchema } from '@/lib/zod'
@@ -112,9 +112,9 @@ const onSubmit = form.handleSubmit((values) => mutateAsync(values))
 <template>
   <Dialog :open="open" @update:open="toggleOpen">
     <DialogTrigger as-child>
-      <ScnButton type="button" variant="outline" size="icon">
+      <Button type="button" variant="outline" size="icon">
         <PencilIcon class="size-5" />
-      </ScnButton>
+      </Button>
     </DialogTrigger>
     <DialogContent @open-auto-focus.prevent>
       <DialogHeader>
@@ -129,7 +129,7 @@ const onSubmit = form.handleSubmit((values) => mutateAsync(values))
           <FormItem>
             <FormLabel>Title</FormLabel>
             <FormControl>
-              <ScnInput
+              <Input
                 type="text"
                 placeholder="Title"
                 v-bind="componentField"
@@ -145,7 +145,7 @@ const onSubmit = form.handleSubmit((values) => mutateAsync(values))
           <label class="block text-left text-sm font-medium tracking-tight text-foreground">
             Destination URL
           </label>
-          <ScnInput type="text" :default-value="props.destinationUrl" :disabled="true" />
+          <Input type="text" :default-value="props.destinationUrl" :disabled="true" />
         </div>
 
         <!-- Shortened URL -->
@@ -155,7 +155,7 @@ const onSubmit = form.handleSubmit((values) => mutateAsync(values))
             <label class="block text-left text-sm font-medium tracking-tight text-foreground">
               Domain
             </label>
-            <ScnInput type="text" default-value="https://url.dewodt.com" :disabled="true" />
+            <Input type="text" default-value="https://url.dewodt.com" :disabled="true" />
           </div>
 
           <!-- / -->
@@ -172,7 +172,7 @@ const onSubmit = form.handleSubmit((values) => mutateAsync(values))
             <FormItem class="w-full">
               <FormLabel>Custom Path</FormLabel>
               <FormControl>
-                <ScnInput type="text" placeholder="Custom Path" v-bind="componentField" />
+                <Input type="text" placeholder="Custom Path" v-bind="componentField" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -180,7 +180,7 @@ const onSubmit = form.handleSubmit((values) => mutateAsync(values))
         </div>
 
         <!-- Submit Button -->
-        <ScnButton
+        <Button
           type="submit"
           class="w-full"
           size="lg"
@@ -190,7 +190,7 @@ const onSubmit = form.handleSubmit((values) => mutateAsync(values))
           "
         >
           <Loader2 v-if="form.isSubmitting.value" class="mr-2 h-4 w-4 animate-spin" /> Update
-        </ScnButton>
+        </Button>
       </form>
     </DialogContent>
   </Dialog>

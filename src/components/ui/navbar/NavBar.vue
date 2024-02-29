@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { AvatarContainer, AvatarFallback, AvatarImage } from '../avatar'
-import { ScnButton } from '../button'
+import { Avatar, AvatarFallback, AvatarImage } from '../avatar'
+import { Button } from '../button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -66,8 +66,8 @@ const onSignOut = () => {
       <img src="/logo-cropped.png" class="h-10 w-auto" alt="Snip URL Logo" />
     </RouterLink>
 
-    <!-- Menu Icon ScnButton -->
-    <ScnButton
+    <!-- Menu Icon Button -->
+    <Button
       data-cy="navbar-menu"
       variant="ghost"
       size="icon"
@@ -76,7 +76,7 @@ const onSignOut = () => {
       @click="emits('toggleNavBarExpanded')"
     >
       <Menu :size="36" class="stroke-foreground" />
-    </ScnButton>
+    </Button>
 
     <div
       data-cy="navbar-expanded"
@@ -90,7 +90,7 @@ const onSignOut = () => {
       <div class="flex flex-row items-center justify-between">
         <div class="flex flex-row items-center gap-6">
           <!-- Toggle Light/Dark mode -->
-          <ScnButton
+          <Button
             data-cy="navbar-theme"
             variant="outline"
             size="icon"
@@ -99,7 +99,7 @@ const onSignOut = () => {
           >
             <MoonStar v-if="theme === 'dark'" class="h-6 w-6 stroke-primary" />
             <Sun v-else class="h-6 w-6 stroke-primary" />
-          </ScnButton>
+          </Button>
 
           <!-- Profile dropdown when there's session -->
           <DropdownMenu v-if="session && !isLoading">
@@ -108,7 +108,7 @@ const onSignOut = () => {
               class="flex h-11 w-11 items-center justify-center rounded-full border-4 border-transparent hover:border-border data-[state=open]:border-4 data-[state=open]:border-border"
             >
               <!-- Avatar  -->
-              <AvatarContainer class="h-10 w-10">
+              <Avatar class="h-10 w-10">
                 <AvatarImage
                   :src="session.avatar ?? ''"
                   alt="Avatar Image"
@@ -117,7 +117,7 @@ const onSignOut = () => {
                 <AvatarFallback>
                   <UserCircle2 class="h-10 w-10 stroke-gray-500 stroke-1" />
                 </AvatarFallback>
-              </AvatarContainer>
+              </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <!-- Title  -->
@@ -141,14 +141,14 @@ const onSignOut = () => {
             </DropdownMenuContent>
           </DropdownMenu>
           <RouterLink v-else to="/auth/sign-in" aria-label="Sign In">
-            <ScnButton variant="default" size="lg" class="hidden font-semibold lg:flex">
+            <Button variant="default" size="lg" class="hidden font-semibold lg:flex">
               Sign In
-            </ScnButton>
+            </Button>
           </RouterLink>
         </div>
 
-        <!-- Close ScnButton -->
-        <ScnButton
+        <!-- Close Button -->
+        <Button
           data-cy="navbar-close"
           variant="ghost"
           size="icon"
@@ -157,7 +157,7 @@ const onSignOut = () => {
           @click="$emit('toggleNavBarExpanded')"
         >
           <X :size="36" class="stroke-foreground" />
-        </ScnButton>
+        </Button>
       </div>
 
       <!-- Path lists -->
@@ -181,14 +181,14 @@ const onSignOut = () => {
         </ul>
       </nav>
 
-      <!-- Sign In ScnButton when there's no session -->
+      <!-- Sign In Button when there's no session -->
       <RouterLink
         v-if="!session || isLoading"
         to="/auth/sign-in"
         class="self-center"
         aria-label="Sign In"
       >
-        <ScnButton variant="default" size="lg" class="font-semibold lg:hidden"> Sign In </ScnButton>
+        <Button variant="default" size="lg" class="font-semibold lg:hidden"> Sign In </Button>
       </RouterLink>
     </div>
 

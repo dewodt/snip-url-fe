@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ScnButton } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
 import { useHead } from '@unhead/vue'
 import { ArrowRightCircle } from 'lucide-vue-next'
 import { RouterLink } from 'vue-router'
@@ -38,10 +38,10 @@ useHead({
             and remember.
           </p>
           <RouterLink to="/dashboard/create-new" data-cy="hero-link">
-            <ScnButton size="lg">
+            <Button size="lg">
               Try Now
               <ArrowRightCircle class="ml-2 h-5 w-5" />
-            </ScnButton>
+            </Button>
           </RouterLink>
         </div>
 

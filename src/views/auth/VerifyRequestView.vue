@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CardContainer, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { useHead } from '@unhead/vue'
 
 // Add custom metatags for current page
@@ -21,7 +21,7 @@ useHead({
 <template>
   <main class="flex flex-auto items-center justify-center p-6 py-12 sm:p-12 lg:p-24">
     <section class="max-w-xl">
-      <CardContainer class="flex flex-col gap-2 p-8 shadow-lg lg:gap-5 lg:p-10">
+      <Card class="flex flex-col gap-2 p-8 shadow-lg lg:gap-5 lg:p-10">
         <CardHeader class="p-0">
           <h1
             data-cy="verify-request-title"
@@ -37,7 +37,7 @@ useHead({
             folder.
           </p>
         </CardContent>
-      </CardContainer>
+      </Card>
     </section>
   </main>
 </template>

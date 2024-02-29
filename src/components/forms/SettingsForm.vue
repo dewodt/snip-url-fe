@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useSession } from '../layout/session/session'
-import { AvatarContainer, AvatarFallback, AvatarImage } from '../ui/avatar'
-import { CardContainer, CardContent, CardHeader } from '../ui/card'
-import ScnButton from '@/components/ui/button/ScnButton.vue'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
+import { Card, CardContent, CardHeader } from '../ui/card'
+import Button from '@/components/ui/button/Button.vue'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { ScnInput } from '@/components/ui/input'
+import { Input } from '@/components/ui/input'
 import { beURL } from '@/lib/url'
 import { cn } from '@/lib/utils'
 import { avatarSchema, settingsSchema } from '@/lib/zod'
@@ -149,7 +149,7 @@ const isFormDirty = computed(
 </script>
 
 <template>
-  <CardContainer class="shadow-lg">
+  <Card class="shadow-lg">
     <CardHeader>
       <div class="flex flex-row items-center gap-2">
         <UserIcon class="h-6 w-6 stroke-primary" />
@@ -164,7 +164,7 @@ const isFormDirty = computed(
             <FormLabel>Avatar</FormLabel>
             <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
               <!-- Avatar Preview -->
-              <AvatarContainer
+              <Avatar
                 @click="
                   () =>
                     !form.isSubmitting.value &&
@@ -188,12 +188,12 @@ const isFormDirty = computed(
                 <AvatarFallback>
                   <UserCircle2 class="h-20 w-20 stroke-gray-500 stroke-1" />
                 </AvatarFallback>
-              </AvatarContainer>
+              </Avatar>
 
               <div class="flex flex-row gap-4">
                 <!-- File Upload -->
                 <FormControl>
-                  <ScnInput
+                  <Input
                     type="file"
                     accept="image/*"
                     ref="fileInputRef"
@@ -205,7 +205,7 @@ const isFormDirty = computed(
                 </FormControl>
 
                 <!-- File Delete  -->
-                <ScnButton
+                <Button
                   data-cy="settings-profile-avatar-delete"
                   type="button"
                   variant="destructive"
@@ -217,7 +217,7 @@ const isFormDirty = computed(
                   @click="() => form.setFieldValue('avatar', null, true)"
                 >
                   <Trash2 class="h-5 w-5" />
-                </ScnButton>
+                </Button>
               </div>
             </div>
             <FormMessage />
@@ -229,7 +229,7 @@ const isFormDirty = computed(
           <label class="block text-left text-sm font-medium tracking-tight text-foreground">
             Email
           </label>
-          <ScnInput type="text" :default-value="session?.email" :disabled="true" />
+          <Input type="text" :default-value="session?.email" :disabled="true" />
         </div>
 
         <!-- Name -->
@@ -237,22 +237,22 @@ const isFormDirty = computed(
           <FormItem>
             <FormLabel>Name</FormLabel>
             <FormControl>
-              <ScnInput type="text" placeholder="Name" v-bind="componentField" />
+              <Input type="text" placeholder="Name" v-bind="componentField" />
             </FormControl>
             <FormMessage />
           </FormItem>
         </FormField>
 
         <!-- Submit Button -->
-        <ScnButton
+        <Button
           class="w-full"
           size="lg"
           type="submit"
           :disabled="form.isSubmitting.value || mutateAvatar.isPending.value || !isFormDirty"
         >
           <Loader2 v-if="form.isSubmitting.value" class="mr-2 h-4 w-4 animate-spin" /> Update
-        </ScnButton>
+        </Button>
       </form>
     </CardContent>
-  </CardContainer>
+  </Card>
 </template>

@@ -2,10 +2,10 @@
 import DiscordIcon from '../icons/DiscordIcon.vue'
 import GitHubIcon from '../icons/GitHubIcon.vue'
 import GoogleIcon from '../icons/GoogleIcon.vue'
-import ScnButton from '@/components/ui/button/ScnButton.vue'
+import Button from '@/components/ui/button/Button.vue'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { ScnInput } from '@/components/ui/input'
-import { ScnSeparator } from '@/components/ui/separator'
+import { Input } from '@/components/ui/input'
+import { Separator } from '@/components/ui/separator'
 import { beURL } from '@/lib/url'
 import { signUpSchema } from '@/lib/zod'
 import router from '@/router'
@@ -103,7 +103,7 @@ const onClickDiscord = () => {
         <FormItem>
           <FormLabel>Name</FormLabel>
           <FormControl>
-            <ScnInput
+            <Input
               type="text"
               placeholder="Name"
               v-bind="componentField"
@@ -119,7 +119,7 @@ const onClickDiscord = () => {
         <FormItem>
           <FormLabel>Email</FormLabel>
           <FormControl>
-            <ScnInput
+            <Input
               type="email"
               placeholder="Email"
               v-bind="componentField"
@@ -131,7 +131,7 @@ const onClickDiscord = () => {
       </FormField>
 
       <!-- Submit Button -->
-      <ScnButton
+      <Button
         variant="default"
         class="w-full"
         size="lg"
@@ -140,13 +140,13 @@ const onClickDiscord = () => {
       >
         <Loader2 v-if="form.isSubmitting.value" class="mr-2 h-4 w-4 animate-spin" /> Continue with
         Email
-      </ScnButton>
+      </Button>
     </form>
 
     <!-- Separator -->
     <div class="relative">
       <div class="absolute inset-0 flex items-center">
-        <ScnSeparator />
+        <Separator />
       </div>
       <div class="relative flex justify-center text-xs uppercase">
         <span class="bg-background px-2 text-muted-foreground">or</span>
@@ -154,7 +154,7 @@ const onClickDiscord = () => {
     </div>
 
     <!-- Google oAuth -->
-    <ScnButton
+    <Button
       variant="secondary"
       type="button"
       size="lg"
@@ -164,10 +164,10 @@ const onClickDiscord = () => {
     >
       <GoogleIcon :size="20" />
       Continue with Google
-    </ScnButton>
+    </Button>
 
     <!-- GitHub oAuth -->
-    <ScnButton
+    <Button
       variant="secondary"
       type="button"
       size="lg"
@@ -177,10 +177,10 @@ const onClickDiscord = () => {
     >
       <GitHubIcon :size="20" />
       Continue with GitHub
-    </ScnButton>
+    </Button>
 
     <!-- Discord oAuth -->
-    <ScnButton
+    <Button
       variant="secondary"
       type="button"
       size="lg"
@@ -190,7 +190,7 @@ const onClickDiscord = () => {
     >
       <DiscordIcon :size="20" />
       Continue with Discord
-    </ScnButton>
+    </Button>
 
     <!-- Sign up option -->
     <div>

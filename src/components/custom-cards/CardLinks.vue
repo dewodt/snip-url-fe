@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import UpdateFormDialog from '../forms/UpdateFormDialog.vue'
-import { AvatarContainer, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
-import ScnButton from '@/components/ui/button/ScnButton.vue'
+import Button from '@/components/ui/button/Button.vue'
 import {
   Dialog,
   DialogContent,
@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import ScnSeparator from '@/components/ui/separator/ScnSeparator.vue'
+import Separator from '@/components/ui/separator/Separator.vue'
 import { cn } from '@/lib/utils'
 import type { LinksResponse } from '@/types/api'
 import {
@@ -76,12 +76,12 @@ watch(isCopied, (newValue) => {
     <div class="flex flex-row gap-3">
       <!-- Icon -->
       <div class="hidden sm:block">
-        <AvatarContainer class="size-12">
+        <Avatar class="size-12">
           <AvatarImage alt="Website Icon" :src="`${props.destinationUrl}/favicon.ico`" />
           <AvatarFallback>
             <GlobeIcon class="size-9" />
           </AvatarFallback>
-        </AvatarContainer>
+        </Avatar>
       </div>
 
       <!-- Texts -->
@@ -162,18 +162,18 @@ watch(isCopied, (newValue) => {
     </div>
 
     <!-- Separator -->
-    <ScnSeparator class="lg:hidden" />
+    <Separator class="lg:hidden" />
 
     <!-- Actions -->
     <div class="flex flex-row gap-3 sm:justify-end">
       <!-- Copy -->
-      <ScnButton
+      <Button
         variant="secondary"
         class="flex-auto sm:flex-initial"
         @click="handleCopy(getShortenedUrl(latestPath))"
       >
         <CopyIcon class="mr-2 size-5" /> {{ isCopied ? 'Copied' : 'Copy' }}
-      </ScnButton>
+      </Button>
 
       <!-- Edit -->
       <UpdateFormDialog
@@ -186,9 +186,9 @@ watch(isCopied, (newValue) => {
       <!-- More -->
       <DropdownMenu>
         <DropdownMenuTrigger as-child>
-          <ScnButton variant="outline" size="icon" class="flex data-[state=open]:bg-muted">
+          <Button variant="outline" size="icon" class="flex data-[state=open]:bg-muted">
             <MoreHorizontal class="size-5" />
-          </ScnButton>
+          </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" class="w-[150px]">
           <DropdownMenuItem>

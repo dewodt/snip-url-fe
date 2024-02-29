@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Skeleton } from '../ui/skeleton'
-import { CardContainer, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 
 interface CardLocationProps {
@@ -10,7 +10,7 @@ interface CardLocationProps {
 const props = withDefaults(defineProps<CardLocationProps>(), { class: '' })
 </script>
 <template>
-  <CardContainer :class="cn('shadow-lg', props.class)">
+  <Card :class="cn('shadow-lg', props.class)">
     <CardHeader class="px-6 pb-2 pt-6">
       <h3 class="text-base font-semibold text-primary">Locations</h3>
     </CardHeader>
@@ -36,5 +36,5 @@ const props = withDefaults(defineProps<CardLocationProps>(), { class: '' })
         </tbody>
       </table>
     </CardContent>
-  </CardContainer>
+  </Card>
 </template>

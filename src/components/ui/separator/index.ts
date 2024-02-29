@@ -1,1 +1,1 @@
-export { default as ScnSeparator } from './ScnSeparator.vue'
+export { default as Separator } from './Separator.vue'

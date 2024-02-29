@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { CardContainer, CardContent, CardHeader } from '../ui/card'
+import { Card, CardContent, CardHeader } from '../ui/card'
 import { Skeleton } from '../ui/skeleton'
 import { UserIcon } from 'lucide-vue-next'
 </script>
 
 <template>
-  <CardContainer class="shadow-lg">
+  <Card class="shadow-lg">
     <CardHeader>
       <div class="flex flex-row items-center gap-2">
         <UserIcon class="h-6 w-6 stroke-primary" />
@@ -47,5 +47,5 @@ import { UserIcon } from 'lucide-vue-next'
         <Skeleton class="h-11 w-full" />
       </div>
     </CardContent>
-  </CardContainer>
+  </Card>
 </template>

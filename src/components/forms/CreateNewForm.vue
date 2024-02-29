@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import ScnButton from '@/components/ui/button/ScnButton.vue'
-import { CardContainer, CardContent, CardHeader } from '@/components/ui/card'
+import Button from '@/components/ui/button/Button.vue'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { ScnInput } from '@/components/ui/input'
+import { Input } from '@/components/ui/input'
 import { queryClient } from '@/lib/query'
 import { beURL } from '@/lib/url'
 import { createSchema } from '@/lib/zod'
@@ -81,7 +81,7 @@ const onSubmit = form.handleSubmit((values) => mutateAsync(values))
 </script>
 
 <template>
-  <CardContainer class="shadow-lg">
+  <Card class="shadow-lg">
     <CardHeader>
       <div class="flex flex-row items-center gap-2">
         <PlusCircle class="h-6 w-6 stroke-primary" />
@@ -95,7 +95,7 @@ const onSubmit = form.handleSubmit((values) => mutateAsync(values))
           <FormItem>
             <FormLabel> Title </FormLabel>
             <FormControl>
-              <ScnInput
+              <Input
                 type="text"
                 placeholder="Title"
                 v-bind="componentField"
@@ -115,7 +115,7 @@ const onSubmit = form.handleSubmit((values) => mutateAsync(values))
           <FormItem>
             <FormLabel>Destination URL</FormLabel>
             <FormControl>
-              <ScnInput
+              <Input
                 type="text"
                 placeholder="Destination URL"
                 v-bind="componentField"
@@ -133,7 +133,7 @@ const onSubmit = form.handleSubmit((values) => mutateAsync(values))
             <label class="block text-left text-sm font-medium tracking-tight text-foreground">
               Domain
             </label>
-            <ScnInput type="text" default-value="https://url.dewodt.com" :disabled="true" />
+            <Input type="text" default-value="https://url.dewodt.com" :disabled="true" />
           </div>
 
           <!-- / -->
@@ -150,7 +150,7 @@ const onSubmit = form.handleSubmit((values) => mutateAsync(values))
             <FormItem class="w-full">
               <FormLabel>Custom Path</FormLabel>
               <FormControl>
-                <ScnInput
+                <Input
                   type="text"
                   placeholder="Custom Path"
                   v-bind="componentField"
@@ -163,10 +163,10 @@ const onSubmit = form.handleSubmit((values) => mutateAsync(values))
         </div>
 
         <!-- Submit Button -->
-        <ScnButton class="w-full" size="lg" type="submit" :disabled="form.isSubmitting.value">
+        <Button class="w-full" size="lg" type="submit" :disabled="form.isSubmitting.value">
           <Loader2 v-if="form.isSubmitting.value" class="mr-2 h-4 w-4 animate-spin" /> Create
-        </ScnButton>
+        </Button>
       </form>
     </CardContent>
-  </CardContainer>
+  </Card>
 </template>

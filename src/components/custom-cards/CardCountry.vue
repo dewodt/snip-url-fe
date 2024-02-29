@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CardContainer, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
@@ -13,7 +13,7 @@ interface CardLocationProps {
 const props = withDefaults(defineProps<CardLocationProps>(), { class: '' })
 </script>
 <template>
-  <CardContainer :class="cn('shadow-lg', props.class)">
+  <Card :class="cn('shadow-lg', props.class)">
     <CardHeader class="px-6 pb-2 pt-6">
       <h3 class="text-base font-semibold text-primary">Locations</h3>
     </CardHeader>
@@ -52,5 +52,5 @@ const props = withDefaults(defineProps<CardLocationProps>(), { class: '' })
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
     </CardContent>
-  </CardContainer>
+  </Card>
 </template>

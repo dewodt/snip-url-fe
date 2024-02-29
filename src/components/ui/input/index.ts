@@ -1,1 +1,1 @@
-export { default as ScnInput } from './ScnInput.vue'
+export { default as Input } from './Input.vue'

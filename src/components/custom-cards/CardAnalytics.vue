@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CardContainer from '../ui/card/CardContainer.vue'
+import Card from '../ui/card/Card.vue'
 import CardContent from '../ui/card/CardContent.vue'
 import CardHeader from '../ui/card/CardHeader.vue'
 import { cn } from '@/lib/utils'
@@ -14,12 +14,12 @@ const props = withDefaults(defineProps<CardAnalyticsProps>(), {
 </script>
 
 <template>
-  <CardContainer :class="cn('flex flex-col shadow-lg', props.class)">
+  <Card :class="cn('flex flex-col shadow-lg', props.class)">
     <CardHeader class="px-6 pb-2 pt-6">
       <slot name="card-header"> </slot>
     </CardHeader>
     <CardContent class="flex flex-auto">
       <slot name="card-content"></slot>
     </CardContent>
-  </CardContainer>
+  </Card>
 </template>

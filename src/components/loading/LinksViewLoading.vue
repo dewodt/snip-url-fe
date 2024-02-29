@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { CardLinksLoading } from '../custom-cards'
-import { CardContainer, CardContent, CardHeader } from '../ui/card'
+import { Card, CardContent, CardHeader } from '../ui/card'
 import { LinkIcon } from 'lucide-vue-next'
 </script>
 
 <template>
   <main className="w-full">
-    <CardContainer class="shadow-lg">
+    <Card class="shadow-lg">
       <CardHeader>
         <div class="flex flex-row items-center gap-2">
           <LinkIcon class="h-6 w-6 stroke-primary" />
@@ -21,6 +21,6 @@ import { LinkIcon } from 'lucide-vue-next'
           </li>
         </ul>
       </CardContent>
-    </CardContainer>
+    </Card>
   </main>
 </template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Skeleton from '../ui/skeleton/Skeleton.vue'
-import ScnSeparator from '@/components/ui/separator/ScnSeparator.vue'
+import Separator from '@/components/ui/separator/Separator.vue'
 import { cn } from '@/lib/utils'
 
 // Props
@@ -53,7 +53,7 @@ const props = withDefaults(defineProps<{ class: string }>(), {
     </div>
 
     <!-- Separator -->
-    <ScnSeparator class="lg:hidden" />
+    <Separator class="lg:hidden" />
 
     <!-- Actions -->
     <div class="flex flex-row gap-3 sm:justify-end">

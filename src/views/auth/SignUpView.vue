@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SignUpForm from '@/components/forms/SignUpForm.vue'
-import { CardContainer, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { useHead } from '@unhead/vue'
 
 // Add custom metatags for current page
@@ -21,7 +21,7 @@ useHead({
 
 <template>
   <main class="flex flex-auto items-center justify-center p-6 py-12 sm:p-12 lg:p-24">
-    <CardContainer class="w-full max-w-sm shadow-lg">
+    <Card class="w-full max-w-sm shadow-lg">
       <!-- Title -->
       <CardHeader>
         <h1 class="text-center text-3xl font-bold text-primary">Sign Up</h1>
@@ -31,6 +31,6 @@ useHead({
       <CardContent>
         <SignUpForm />
       </CardContent>
-    </CardContainer>
+    </Card>
   </main>
 </template>
