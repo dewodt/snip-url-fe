@@ -1,6 +1,6 @@
 import HomeView from '../views/HomeView.vue'
 import LinksView from '../views/dashboard/LinksView.vue'
-import { beURL, feURL } from './../lib/url'
+import { beURL } from './../lib/url'
 import AboutView from '@/views/AboutView.vue'
 import PrivacyPolicyView from '@/views/PrivacyPolicyView.vue'
 import ErrorView from '@/views/auth/ErrorView.vue'
@@ -14,7 +14,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 // Router definition
 const router = createRouter({
-  history: createWebHistory(feURL),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',

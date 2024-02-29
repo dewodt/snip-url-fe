@@ -3,13 +3,22 @@ import ScnButton from '@/components/ui/button/ScnButton.vue'
 import { CardContainer, CardContent, CardHeader } from '@/components/ui/card'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { ScnInput } from '@/components/ui/input'
+import { queryClient } from '@/lib/query'
 import { beURL } from '@/lib/url'
 import { createSchema } from '@/lib/zod'
-import router from '@/router'
+import type { ErrorResponse, SuccessResponse } from '@/types/api'
+import { useMutation } from '@tanstack/vue-query'
 import { toTypedSchema } from '@vee-validate/zod'
 import { Loader2, PlusCircle, SlashIcon } from 'lucide-vue-next'
 import { useForm } from 'vee-validate'
 import { toast } from 'vue-sonner'
+import * as zod from 'zod'
+
+// Get type from zod schema
+type FormDataValues = zod.TypeOf<typeof createSchema>
+interface SuccessResponseData {
+  id: string
+}
 
 // Form schema
 const formSchema = toTypedSchema(createSchema)
@@ -19,43 +28,56 @@ const form = useForm({
   validationSchema: formSchema
 })
 
-// Submit handler
-const onSubmit = form.handleSubmit(async (values) => {
-  // Create form data
-  const formData = new FormData()
-  formData.append('title', values.title)
-  formData.append('destinationUrl', values.destinationUrl)
-  formData.append('customPath', values.customPath)
+// Mutation hook
+const { mutateAsync } = useMutation<
+  SuccessResponse<SuccessResponseData>,
+  ErrorResponse,
+  FormDataValues
+>({
+  mutationFn: async (values) => {
+    // Create form data
+    const formData = new FormData()
+    formData.append('title', values.title)
+    formData.append('destinationUrl', values.destinationUrl)
+    formData.append('customPath', values.customPath)
 
-  // Show loading toast
-  toast.loading('Loading', { description: 'Please wait...' })
+    // Submit form data
+    const res = await fetch(`${beURL}/api/link`, {
+      method: 'POST',
+      body: formData,
+      credentials: 'include'
+    })
+    const resJSON = await res.json()
 
-  // Submit form data
-  const res = await fetch(`${beURL}/api/link`, {
-    method: 'POST',
-    body: formData,
-    credentials: 'include'
-  })
-  const resJSON = await res.json()
+    // Error
+    if (!res.ok) {
+      throw resJSON
+    }
 
-  // Error
-  if (!res.ok) {
+    // Success
+    return resJSON
+  },
+  onError: (error) => {
     // Toast error
-    toast.error('Error', { description: resJSON.error || 'Something went wrong' })
+    toast.error('Error', { description: error.error || 'Something went wrong' })
 
     // Set field error
-    resJSON.field && form.setFieldError(resJSON.field, resJSON.error)
+    error.field && form.setFieldError(error.field, error.error)
+  },
+  onSuccess: async (data) => {
+    // Revlidate links
+    await queryClient.refetchQueries({ queryKey: ['link'] })
 
-    return
+    // Toast success
+    toast.success('Success', { description: 'Link created successfully' })
+
+    // Push to links page
+    window.location.href = `/dashboard/links/${data.data?.id}`
   }
-
-  // Success
-  toast.success('Success', { description: 'Link created successfully' })
-
-  // Push to links detail page
-  const linkId = resJSON.id
-  router.push(`/links/${linkId}`)
 })
+
+// Submit handler
+const onSubmit = form.handleSubmit((values) => mutateAsync(values))
 </script>
 
 <template>

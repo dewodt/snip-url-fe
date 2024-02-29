@@ -1,3 +1,13 @@
+export interface SuccessResponse<T = {}> {
+  message: string
+  data?: T
+}
+
+export interface ErrorResponse<T = {}> {
+  error: string
+  field?: keyof T
+}
+
 export interface CustomPaths {
   id: string
   path: string

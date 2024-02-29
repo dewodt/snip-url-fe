@@ -9,10 +9,16 @@ import { ScnSeparator } from '@/components/ui/separator'
 import { beURL } from '@/lib/url'
 import { signUpSchema } from '@/lib/zod'
 import router from '@/router'
+import type { ErrorResponse, SuccessResponse } from '@/types/api'
+import { useMutation } from '@tanstack/vue-query'
 import { toTypedSchema } from '@vee-validate/zod'
 import { Loader2 } from 'lucide-vue-next'
 import { useForm } from 'vee-validate'
 import { toast } from 'vue-sonner'
+import * as zod from 'zod'
+
+// Get form data values
+type FormDataValues = zod.TypeOf<typeof signUpSchema>
 
 // Form schema
 const formSchema = toTypedSchema(signUpSchema)
@@ -22,42 +28,56 @@ const form = useForm({
   validationSchema: formSchema
 })
 
-// Submit handler
-const onSubmit = form.handleSubmit(async (values) => {
-  // Create form data
-  const formData = new FormData()
-  formData.append('email', values.email)
-  formData.append('name', values.name)
+// Mutation hook
+const { mutateAsync } = useMutation<SuccessResponse, ErrorResponse<FormDataValues>, FormDataValues>(
+  {
+    mutationFn: async (values) => {
+      // Create form data
+      const formData = new FormData()
+      formData.append('email', values.email)
+      formData.append('name', values.name)
 
-  // Initialize loading
-  toast.loading('Loading...', { description: 'Please wait' })
+      // Submit form data
+      const res = await fetch(`${beURL}/api/auth/email/sign-up`, {
+        method: 'POST',
+        body: formData
+      })
+      const resJSON = await res.json()
 
-  // Send form data to backend
-  const res = await fetch(`${beURL}/api/auth/email/sign-up`, {
-    method: 'POST',
-    body: formData
-  })
-  const resJSON = await res.json()
+      // Error
+      if (!res.ok) {
+        throw resJSON
+      }
 
-  // Handle response
-  if (!res.ok) {
-    toast.error('Error', {
-      description: resJSON.error
-    })
-    return
+      // Success
+      return resJSON
+    },
+    onError: (error) => {
+      // Error
+      toast.error('Error', {
+        description: error.error || 'Something went wrong'
+      })
+
+      // Field
+      error.field && form.setFieldError(error.field, error.error)
+    },
+    onSuccess: () => {
+      // Success
+      toast.success('Success', {
+        description: 'Please check your email for the magic link.'
+      })
+
+      // Redirect to verify email page
+      const timeOut = setTimeout(() => {
+        clearTimeout(timeOut)
+        router.push('/auth/verify-request')
+      }, 2000)
+    }
   }
+)
 
-  // Success
-  toast.success('Success', {
-    description: 'Please check your email for the magic link.'
-  })
-
-  // Redirect to verify email page
-  const timeOut = setTimeout(() => {
-    clearTimeout(timeOut)
-    router.push('/auth/verify-request')
-  }, 2000)
-})
+// Submit handler
+const onSubmit = form.handleSubmit((values) => mutateAsync(values))
 
 const onClickGoogle = () => {
   const googleOAuthURL = `${beURL}/api/auth/google`

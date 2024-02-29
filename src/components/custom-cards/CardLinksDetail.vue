@@ -29,7 +29,7 @@ import {
   MoreHorizontal,
   Trash2Icon
 } from 'lucide-vue-next'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 
 interface CardLinksDetailProps extends LinkDetailResponse {
@@ -42,8 +42,8 @@ const props = withDefaults(defineProps<CardLinksDetailProps>(), {
 })
 
 const getShortenedUrl = (path: string) => `https://url.dewodt.com/${path}`
-const latestPathIdx = props.customPaths.length - 1
-const latestPath = props.customPaths[latestPathIdx].path
+const latestPathIdx = computed(() => props.customPaths.length - 1)
+const latestPath = computed(() => props.customPaths[latestPathIdx.value].path)
 
 // Copy state
 const isCopied = ref(false)
@@ -124,7 +124,7 @@ watch(isCopied, (newValue) => {
                       :key="path.id"
                       class="flex gap-3"
                     >
-                      <span>{{ getShortenedUrl(props.customPaths[index].path) }}</span>
+                      <span>{{ getShortenedUrl(path.path) }}</span>
                       <Badge v-if="index === 0" variant="green"> Latest </Badge>
                     </li>
                   </ul>

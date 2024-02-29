@@ -30,7 +30,7 @@ import {
   MoreHorizontal,
   Trash2Icon
 } from 'lucide-vue-next'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 
 interface CardLinksProps extends LinksResponse {
@@ -41,8 +41,8 @@ interface CardLinksProps extends LinksResponse {
 const props = withDefaults(defineProps<CardLinksProps>(), {
   class: ''
 })
-const latestPathIdx = props.customPaths.length - 1
-const latestPath = props.customPaths[latestPathIdx].path
+const latestPathIdx = computed(() => props.customPaths.length - 1)
+const latestPath = computed(() => props.customPaths[latestPathIdx.value].path)
 const getShortenedUrl = (path: string) => `https://url.dewodt.com/${path}`
 
 // Copy state
