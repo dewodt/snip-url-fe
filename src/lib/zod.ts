@@ -22,8 +22,8 @@ export const createSchema = z.object({
     .string({ required_error: 'Custom path is required' })
     .min(1, 'Custom path is required')
     .regex(
-      /^[^~<>;':"/\\[\]^{}()=+!*@&$?%#|]+$/,
-      'The characters `~,<>;:\'"/\\[\\]^{}()=+!*@&$?%#|` are not allowed'
+      /^[^~<>\s\t;':"/\\[\]^{}()=+!*@&$?%#|]+$/,
+      'The characters `~,<>\\s\\t;:\'"/\\[\\]^{}()=+!*@&$?%#|` are not allowed'
     )
 })
 

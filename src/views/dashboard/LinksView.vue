@@ -195,53 +195,58 @@ const handleArbitrary = (page: number) => {
         </div> -->
 
         <!-- Links -->
-        <ul v-if="data" class="flex w-full flex-col gap-6">
-          <li v-for="item in data.data" :key="item.id">
-            <CardLinks v-bind="item" />
-          </li>
-        </ul>
-        <p v-else class="text-base text-muted-foreground">Data is not available</p>
+        <p v-if="!data?.data" class="self-center text-center text-muted-foreground">
+          Data is not available
+        </p>
 
-        <!-- Pagination -->
-        <Pagination
-          v-slot="{ page }"
-          :default-page="1"
-          :items-per-page="6"
-          :page="currentPage"
-          show-edges
-          :sibling-count="2"
-          :total="data?.totalLinks"
-          class="self-center"
-        >
-          <PaginationList
-            v-slot="{ items }"
-            class="flex flex-wrap items-center justify-center gap-1"
+        <template v-else>
+          <ul class="flex w-full flex-col gap-6">
+            <li v-for="item in data?.data" :key="item.id">
+              <CardLinks v-bind="item" />
+            </li>
+          </ul>
+
+          <!-- Pagination -->
+          <Pagination
+            v-slot="{ page }"
+            :default-page="1"
+            :items-per-page="6"
+            :page="currentPage"
+            show-edges
+            :sibling-count="2"
+            :total="data?.totalLinks"
+            class="self-center"
           >
-            <PaginationFirst @click="handleFirst" />
-            <PaginationPrev @click="handlePrev" />
+            <PaginationList
+              v-slot="{ items }"
+              class="flex flex-wrap items-center justify-center gap-1"
+            >
+              <PaginationFirst @click="handleFirst" />
+              <PaginationPrev @click="handlePrev" />
 
-            <template v-for="(item, index) in items">
-              <PaginationListItem
-                v-if="item.type === 'page'"
-                :key="index"
-                :value="item.value"
-                as-child
-              >
-                <Button
-                  class="h-10 w-10 p-0"
-                  :variant="item.value === page ? 'default' : 'outline'"
-                  @click="handleArbitrary(item.value)"
+              <template v-for="(item, index) in items">
+                <PaginationListItem
+                  v-if="item.type === 'page'"
+                  :key="index"
+                  :value="item.value"
+                  as-child
                 >
-                  {{ item.value }}
-                </Button>
-              </PaginationListItem>
-              <PaginationEllipsis v-else :key="item.type" :index="index" />
-            </template>
+                  <Button
+                    class="h-10 w-10 p-0"
+                    :variant="item.value === page ? 'default' : 'outline'"
+                    @click="handleArbitrary(item.value)"
+                  >
+                    {{ item.value }}
+                  </Button>
+                </PaginationListItem>
+                <PaginationEllipsis v-else :key="item.type" :index="index" />
+              </template>
 
-            <PaginationNext @click="handleNext" />
-            <PaginationLast @click="handleLast" />
-          </PaginationList>
-        </Pagination>
+              <PaginationNext @click="handleNext" />
+              <PaginationLast @click="handleLast" />
+            </PaginationList>
+          </Pagination>
+        </template>
       </CardContent>
     </Card>
   </main>
