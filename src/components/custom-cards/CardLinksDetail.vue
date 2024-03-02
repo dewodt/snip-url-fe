@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import Separator from '@/components/ui/separator/Separator.vue'
+import { beURL } from '@/lib/url'
 import { cn } from '@/lib/utils'
 import type { LinkDetailResponse } from '@/types/api'
 import {
@@ -41,7 +42,7 @@ const props = withDefaults(defineProps<CardLinksDetailProps>(), {
   class: ''
 })
 
-const getShortenedUrl = (path: string) => `https://url.dewodt.com/${path}`
+const getShortenedUrl = (path: string) => `${beURL}/${path}`
 const latestPathIdx = computed(() => props.customPaths.length - 1)
 const latestPath = computed(() => props.customPaths[latestPathIdx.value].path)
 

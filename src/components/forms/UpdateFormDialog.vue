@@ -155,7 +155,7 @@ const onSubmit = form.handleSubmit((values) => mutateAsync(values))
             <label class="block text-left text-sm font-medium tracking-tight text-foreground">
               Domain
             </label>
-            <Input type="text" default-value="https://url.dewodt.com" :disabled="true" />
+            <Input type="text" :default-value="beURL" :disabled="true" />
           </div>
 
           <!-- / -->
