@@ -3,6 +3,7 @@ import DevicesChart from '@/components/charts/DevicesChart.vue'
 import Last4WeeksChart from '@/components/charts/Last4WeeksChart.vue'
 import ReferrersChart from '@/components/charts/ReferrersChart.vue'
 import { CardAnalytics, CardLinksDetail, CardCountry } from '@/components/custom-cards'
+import ServerErrorView from '@/components/error/ServerErrorView.vue'
 import LinksDetailViewLoading from '@/components/loading/LinksDetailViewLoading.vue'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { queryClient } from '@/lib/query'
@@ -31,7 +32,7 @@ useHead({
 })
 
 // Fetch data
-const { data, isLoading } = useQuery(
+const { data, isLoading, isError } = useQuery(
   {
     queryKey: ['link', id],
     queryFn: async () => {
@@ -53,6 +54,9 @@ const { data, isLoading } = useQuery(
 </script>
 
 <template>
+  <!-- Error -->
+  <ServerErrorView v-if="isError" />
+
   <!-- Loading View -->
   <LinksDetailViewLoading v-if="isLoading" />
 

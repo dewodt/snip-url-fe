@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { CardLinks } from '@/components/custom-cards'
+import ServerErrorView from '@/components/error/ServerErrorView.vue'
 import LinksViewLoading from '@/components/loading/LinksViewLoading.vue'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -77,7 +78,7 @@ watch(date, (newDate) => {
 })
 
 // Fetch data
-const { isPending, data, isPlaceholderData } = useQuery(
+const { isPending, data, isPlaceholderData, isError } = useQuery(
   {
     queryKey: ['link', currentPage, date],
     queryFn: async () => {
@@ -161,6 +162,9 @@ const handleResetDate = () => {
 </script>
 
 <template>
+  <!-- Error -->
+  <ServerErrorView v-if="isError" />
+
   <!-- Loading view -->
   <LinksViewLoading v-if="isPending" />
 
