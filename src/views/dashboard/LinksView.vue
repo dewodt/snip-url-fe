@@ -23,7 +23,7 @@ import { type LinksResponse } from '@/types/api'
 import { useQuery, keepPreviousData } from '@tanstack/vue-query'
 import { useHead } from '@unhead/vue'
 import { format } from 'date-fns'
-import { CalendarIcon, LinkIcon } from 'lucide-vue-next'
+import { CalendarIcon, FilterX, LinkIcon } from 'lucide-vue-next'
 import type { DatePickerRangeObject } from 'v-calendar/dist/types/src/use/datePicker.js'
 import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
@@ -72,7 +72,7 @@ watch(date, (newDate) => {
     const endTime = new Date(newDate.end.toString()).getTime() + correction
     // Reset pagination
     currentPage.value = 1
-    router.push({ query: { ...route.query, page: 1, start: startTime, end: endTime } })
+    router.push({ query: { page: 1, start: startTime, end: endTime } })
   }
 })
 
@@ -151,6 +151,13 @@ const handleArbitrary = (page: number) => {
     router.push({ query: { ...route.query, page: currentPage.value } })
   }
 }
+
+// Reset date (and page)
+const handleResetDate = () => {
+  currentPage.value = 1
+  date.value = undefined
+  router.push({ query: { page: 1 } })
+}
 </script>
 
 <template>
@@ -168,7 +175,8 @@ const handleArbitrary = (page: number) => {
       </CardHeader>
       <CardContent class="flex flex-col items-start gap-8">
         <!-- Filter date -->
-        <div class="grid gap-2">
+        <div class="flex flex-row gap-2">
+          <!-- Date trigger -->
           <Popover>
             <PopoverTrigger as-child>
               <Button
@@ -198,6 +206,17 @@ const handleArbitrary = (page: number) => {
               <Calendar v-model.range="date" :columns="1" />
             </PopoverContent>
           </Popover>
+
+          <!-- Reset date -->
+          <Button
+            v-if="date && date.start && date.end"
+            size="icon"
+            variant="destructive"
+            @click="handleResetDate"
+            class="flex-none"
+          >
+            <FilterX class="size-5" />
+          </Button>
         </div>
 
         <!-- Links -->
@@ -223,7 +242,7 @@ const handleArbitrary = (page: number) => {
         >
           <PaginationList
             v-slot="{ items }"
-            class="flex flex-wrap items-center justify-center gap-1"
+            class="flex flex-wrap items-center justify-center gap-2"
           >
             <PaginationFirst @click="handleFirst" />
             <PaginationPrev @click="handlePrev" />
