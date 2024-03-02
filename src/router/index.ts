@@ -2,6 +2,7 @@ import HomeView from '../views/HomeView.vue'
 import LinksView from '../views/dashboard/LinksView.vue'
 import { beURL } from './../lib/url'
 import AboutView from '@/views/AboutView.vue'
+import NotFoundView from '@/views/NotFoundView.vue'
 import PrivacyPolicyView from '@/views/PrivacyPolicyView.vue'
 import ErrorView from '@/views/auth/ErrorView.vue'
 import SignInView from '@/views/auth/SignInView.vue'
@@ -82,6 +83,10 @@ const router = createRouter({
       name: 'dashboard-settings',
       component: SettingsView,
       meta: { layout: 'dashboard' }
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      component: NotFoundView
     }
   ]
 })
