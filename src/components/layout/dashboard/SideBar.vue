@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
-import { HomeIcon, PlusCircle, BarChart3, SettingsIcon, LinkIcon, LogOut } from 'lucide-vue-next'
+import { HomeIcon, PlusCircle, SettingsIcon, LinkIcon } from 'lucide-vue-next'
 import { computed } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 
@@ -40,9 +40,10 @@ const currentRouteName = computed(() => route.path)
         <ul class="flex flex-col gap-2">
           <!-- Create New -->
           <li>
-            <RouterLink to="/dashboard/create-new">
-              <Button size="lg" class="h-12 w-full">
-                Create New <PlusCircle class="ml-2 h-5 w-5" />
+            <RouterLink class="flex" to="/dashboard/create-new">
+              <Button tabindex="-1" size="lg" class="h-12 w-full">
+                <span>Create New</span>
+                <PlusCircle class="ml-2 h-5 w-5" />
               </Button>
             </RouterLink>
           </li>

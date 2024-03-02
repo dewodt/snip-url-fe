@@ -14,7 +14,7 @@ export interface Session {
 // Provider props
 export interface SessionProviderProps {
   session: Ref<Session | null> | Ref<undefined>
-  isLoading: Ref<boolean>
+  isPending: Ref<boolean>
   updateSession: () => void
 }
 

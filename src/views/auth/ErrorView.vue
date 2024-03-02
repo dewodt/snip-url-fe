@@ -36,7 +36,7 @@ useHead({
             We ran into an issue while signing you in, please take a break and try again soon.
           </p>
           <RouterLink to="/auth/sign-in">
-            <Button size="lg">Try Again</Button>
+            <Button tabindex="-1" size="lg">Try Again</Button>
           </RouterLink>
         </CardContent>
       </Card>

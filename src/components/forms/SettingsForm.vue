@@ -6,7 +6,6 @@ import Button from '@/components/ui/button/Button.vue'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { beURL } from '@/lib/url'
-import { cn } from '@/lib/utils'
 import { avatarSchema, settingsSchema } from '@/lib/zod'
 import type { SuccessResponse, ErrorResponse } from '@/types/api'
 import { useMutation } from '@tanstack/vue-query'
@@ -14,7 +13,7 @@ import { toTypedSchema } from '@vee-validate/zod'
 import { Trash2, UserCircle2, UserIcon } from 'lucide-vue-next'
 import { Loader2 } from 'lucide-vue-next'
 import { useForm } from 'vee-validate'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { toast } from 'vue-sonner'
 import * as zod from 'zod'
 
@@ -38,7 +37,7 @@ const form = useForm({
 })
 
 // File input state
-const fileInputRef = ref<HTMLInputElement | null>(null)
+// const fileInputRef = ref<HTMLInputElement | null>(null)
 
 // Upload image mutation hook
 const mutateAvatar = useMutation<SuccessResponse<string>, ErrorResponse, FormDataImageValues>({
@@ -139,6 +138,16 @@ const mutateSettings = useMutation<SuccessResponse, ErrorResponse, FormDataSetti
   }
 })
 
+// Handle avatar
+const handleAvatar = () => {
+  if (form.isSubmitting.value || mutateAvatar.isPending.value) return
+  // fileInputRef bug
+  // const elmt = fileInputRef.value
+  // elmt?.click()
+  const elmt = document.getElementById('input-avatar') as HTMLInputElement
+  elmt.click()
+}
+
 // Submit handler
 const onSubmit = form.handleSubmit((values) => mutateSettings.mutateAsync(values))
 
@@ -164,31 +173,23 @@ const isFormDirty = computed(
             <FormLabel>Avatar</FormLabel>
             <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
               <!-- Avatar Preview -->
-              <Avatar
-                @click="
-                  () =>
-                    !form.isSubmitting.value &&
-                    !mutateAvatar.isPending.value &&
-                    fileInputRef!.click()
-                "
-                :class="
-                  cn(
-                    'h-20 w-20',
-                    form.isSubmitting.value || mutateAvatar.isPending.value
-                      ? 'cursor-not-allowed'
-                      : 'cursor-pointer'
-                  )
-                "
+              <button
+                type="button"
+                @click="handleAvatar"
+                class="size-20"
+                :disabled="form.isSubmitting.value || mutateAvatar.isPending.value"
               >
-                <AvatarImage
-                  :src="form.values.avatar!"
-                  alt="Avatar Upload Preview"
-                  class="object-cover object-center"
-                />
-                <AvatarFallback>
-                  <UserCircle2 class="h-20 w-20 stroke-gray-500 stroke-1" />
-                </AvatarFallback>
-              </Avatar>
+                <Avatar class="size-20">
+                  <AvatarImage
+                    :src="form.values.avatar!"
+                    alt="Avatar Upload Preview"
+                    class="object-cover object-center"
+                  />
+                  <AvatarFallback>
+                    <UserCircle2 class="h-20 w-20 stroke-gray-500 stroke-1" />
+                  </AvatarFallback>
+                </Avatar>
+              </button>
 
               <div class="flex flex-row gap-4">
                 <!-- File Upload -->
@@ -196,7 +197,7 @@ const isFormDirty = computed(
                   <Input
                     type="file"
                     accept="image/*"
-                    ref="fileInputRef"
+                    id="input-avatar"
                     :disabled="form.isSubmitting.value || mutateAvatar.isPending.value"
                     @change="
                       (e: Event) => mutateAvatar.mutate((e.target as HTMLInputElement)!.files![0])
@@ -206,7 +207,6 @@ const isFormDirty = computed(
 
                 <!-- File Delete  -->
                 <Button
-                  data-cy="settings-profile-avatar-delete"
                   type="button"
                   variant="destructive"
                   size="icon"

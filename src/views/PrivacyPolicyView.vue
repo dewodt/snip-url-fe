@@ -20,7 +20,7 @@ useHead({
 
 <template>
   <main class="flex flex-auto justify-center p-6 py-12 sm:p-12 lg:p-24">
-    <section data-cy="privacy-policy-section" class="flex max-w-4xl flex-col gap-5 lg:gap-10">
+    <section class="flex max-w-4xl flex-col gap-5 lg:gap-10">
       <div class="flex flex-col gap-2 lg:gap-6">
         <h1 class="text-center text-3xl font-bold lg:text-5xl">Privacy Policy</h1>
         <p class="text-justify text-base lg:text-lg">
@@ -80,7 +80,9 @@ useHead({
           If you have any questions, concerns, or requests related to this Privacy Policy or how we
           handle your data, please contact us at
           <RouterLink to="mailto:dewantorotriatmojo@gmail.com" target="_blank">
-            <Button variant="link" class="h-fit p-0 text-base lg:text-lg"> this email. </Button>
+            <Button tabindex="-1" variant="link" class="h-fit p-0 text-base lg:text-lg">
+              this email.
+            </Button>
           </RouterLink>
         </p>
       </div>

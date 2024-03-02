@@ -20,13 +20,13 @@ useHead({
 })
 
 // Get session
-const { isLoading } = useSession()
+const { isPending } = useSession()
 </script>
 
 <template>
   <main className="w-full">
     <!-- Loading view -->
-    <SettingsViewLoading v-if="isLoading" />
+    <SettingsViewLoading v-if="isPending" />
 
     <!-- Settings view -->
     <SettingsForm v-else />

@@ -32,7 +32,7 @@ useHead({
 })
 
 // Fetch data
-const { data, isLoading, isError } = useQuery(
+const { data, isPending, isError } = useQuery(
   {
     queryKey: ['link', id],
     queryFn: async () => {
@@ -58,7 +58,7 @@ const { data, isLoading, isError } = useQuery(
   <ServerErrorView v-if="isError" />
 
   <!-- Loading View -->
-  <LinksDetailViewLoading v-if="isLoading" />
+  <LinksDetailViewLoading v-if="isPending" />
 
   <!-- Done View -->
   <main v-else class="grid w-full grid-cols-1 gap-6 sm:grid-cols-2">

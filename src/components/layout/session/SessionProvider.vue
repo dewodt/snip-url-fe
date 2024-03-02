@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/vue-query'
 import { provide } from 'vue'
 
 // Query
-const { data, isLoading, refetch } = useQuery(
+const { data, isPending, refetch } = useQuery(
   {
     queryKey: ['session'],
     queryFn: async () => {
@@ -31,7 +31,7 @@ const { data, isLoading, refetch } = useQuery(
 const updateSession = () => refetch()
 
 // provide it to the app
-provide<SessionProviderProps>(injectSessionKey, { session: data, isLoading, updateSession })
+provide<SessionProviderProps>(injectSessionKey, { session: data, isPending, updateSession })
 </script>
 
 <template>

@@ -10,17 +10,12 @@ const year = new Date().getFullYear()
   >
     <div class="flex flex-row gap-8 sm:gap-12">
       <!-- About -->
-      <RouterLink
-        data-cy="footer-about"
-        to="/about"
-        class="font-medium text-muted-foreground xl:hover:text-foreground"
-      >
+      <RouterLink to="/about" class="font-medium text-muted-foreground xl:hover:text-foreground">
         About
       </RouterLink>
 
       <!-- Privacy policy -->
       <RouterLink
-        data-cy="footer-privacy-policy"
         to="/privacy-policy"
         class="font-medium text-muted-foreground xl:hover:text-foreground"
       >
@@ -29,8 +24,6 @@ const year = new Date().getFullYear()
     </div>
 
     <!-- Copyright -->
-    <p data-cy="footer-copyright" class="text-center font-medium text-muted-foreground">
-      Copyright © {{ year }} Snip URL
-    </p>
+    <p class="text-center font-medium text-muted-foreground">Copyright © {{ year }} Snip URL</p>
   </footer>
 </template>
