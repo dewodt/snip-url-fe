@@ -2,7 +2,7 @@
 import { CardLinks } from '@/components/custom-cards'
 import LinksViewLoading from '@/components/loading/LinksViewLoading.vue'
 import { Button } from '@/components/ui/button'
-// import { Calendar, type DateRange } from '@/components/ui/calendar'
+import { Calendar } from '@/components/ui/calendar'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
   Pagination,
@@ -14,21 +14,19 @@ import {
   PaginationNext,
   PaginationPrev
 } from '@/components/ui/pagination'
-// import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { queryClient } from '@/lib/query'
 import { beURL } from '@/lib/url'
+import { cn } from '@/lib/utils'
 import router from '@/router'
-// import { cn } from '@/lib/utils'
 import { type LinksResponse } from '@/types/api'
 import { useQuery, keepPreviousData } from '@tanstack/vue-query'
 import { useHead } from '@unhead/vue'
-// import { format } from 'date-fns'
-import { LinkIcon } from 'lucide-vue-next'
-// import { Calendar as CalendarIcon } from 'lucide-vue-next'
-import { ref } from 'vue'
+import { format } from 'date-fns'
+import { CalendarIcon, LinkIcon } from 'lucide-vue-next'
+import type { DatePickerRangeObject } from 'v-calendar/dist/types/src/use/datePicker.js'
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-
-// import { computed, ref, watch } from 'vue'
 
 // Add custom metatags for current page
 useHead({
@@ -48,39 +46,48 @@ useHead({
 // Route hook
 const route = useRoute()
 
-// Pagination state (get default state from query params)
+// Pagination state (get default state from query params if available)
 const parsePage = Number(route.query.page)
 const defaultPage = Number.isNaN(parsePage) ? 1 : parsePage
 const currentPage = ref<number>(defaultPage)
-// const resetPage = () => {
-//   currentPage.value = 1
-// }
 
-// // Date range state
-// const date = ref<DateRange>({ start: null, end: null })
+// Date range state (get default state from query params if available)
+const parseStart = Number(route.query.start)
+const parseEnd = Number(route.query.end)
+const defaultRange =
+  Number.isNaN(parseStart) || Number.isNaN(parseEnd)
+    ? undefined
+    : {
+        start: new Date(parseStart),
+        end: new Date(parseEnd)
+      }
+const date = ref<DatePickerRangeObject | undefined>(defaultRange)
 
-// // Reset page to 1 if date range changes
-// watch([date], () => {
-//   resetPage()
-// })
-
-// // Date range string
-// const startDateStr = computed(() => {
-//   return date.value.start ? format(date.value.start, 'yyyy-MM-dd') : ''
-// })
-// const endDateStr = computed(() => {
-//   return date.value.end ? format(date.value.end, 'yyyy-MM-dd') : ''
-// })
+// Reset page when date start or end is changed
+watch(date, (newDate) => {
+  if (newDate && newDate.start && newDate.end) {
+    // Calculate new start & end time
+    const correction = Math.floor(new Date().getTimezoneOffset() / 60) * 3600 * 1000
+    const startTime = new Date(newDate.start.toString()).getTime() + correction
+    const endTime = new Date(newDate.end.toString()).getTime() + correction
+    // Reset pagination
+    currentPage.value = 1
+    router.push({ query: { ...route.query, page: 1, start: startTime, end: endTime } })
+  }
+})
 
 // Fetch data
 const { isPending, data, isPlaceholderData } = useQuery(
   {
-    queryKey: ['link', currentPage],
+    queryKey: ['link', currentPage, date],
     queryFn: async () => {
       let endpointUrl = `${beURL}/api/link?page=${currentPage.value}`
-      // if (startDateStr.value && endDateStr.value) {
-      //   endpointUrl += `&start=${startDateStr.value}&end=${endDateStr.value}`
-      // }
+      if (date.value && date.value.start && date.value.end) {
+        const correction = Math.floor(new Date().getTimezoneOffset() / 60) * 3600 * 1000
+        const startTime = new Date(date.value.start.toString()).getTime() + correction
+        const endTime = new Date(date.value.end.toString()).getTime() + correction
+        endpointUrl += `&start=${startTime}&end=${endTime}`
+      }
 
       const res = await fetch(endpointUrl, {
         method: 'GET',
@@ -106,20 +113,20 @@ const { isPending, data, isPlaceholderData } = useQuery(
 // Previous pagination
 const handlePrev = () => {
   currentPage.value = Math.max(currentPage.value - 1, 1)
-  router.push({ query: { page: currentPage.value } })
+  router.push({ query: { ...route.query, page: currentPage.value } })
 }
 
 // Handle first
 const handleFirst = () => {
   currentPage.value = 1
-  router.push({ query: { page: currentPage.value } })
+  router.push({ query: { ...route.query, page: currentPage.value } })
 }
 
 // Next pagination
 const handleNext = () => {
   if (!isPlaceholderData.value) {
     currentPage.value = currentPage.value + 1
-    router.push({ query: { page: currentPage.value } })
+    router.push({ query: { ...route.query, page: currentPage.value } })
   }
 }
 
@@ -133,7 +140,7 @@ const handleLast = () => {
       // Fallback to first page
       currentPage.value = 1
     }
-    router.push({ query: { page: currentPage.value } })
+    router.push({ query: { ...route.query, page: currentPage.value } })
   }
 }
 
@@ -141,7 +148,7 @@ const handleLast = () => {
 const handleArbitrary = (page: number) => {
   if (!isPlaceholderData.value) {
     currentPage.value = page
-    router.push({ query: { page: currentPage.value } })
+    router.push({ query: { ...route.query, page: currentPage.value } })
   }
 }
 </script>
@@ -161,7 +168,7 @@ const handleArbitrary = (page: number) => {
       </CardHeader>
       <CardContent class="flex flex-col items-start gap-8">
         <!-- Filter date -->
-        <!-- <div class="grid gap-2">
+        <div class="grid gap-2">
           <Popover>
             <PopoverTrigger as-child>
               <Button
@@ -169,7 +176,7 @@ const handleArbitrary = (page: number) => {
                 :variant="'outline'"
                 :class="
                   cn(
-                    'w-full justify-start text-left font-normal sm:w-[260px]',
+                    'h-10 w-full justify-start text-left font-normal sm:w-[260px]',
                     !date && 'text-muted-foreground'
                   )
                 "
@@ -178,75 +185,71 @@ const handleArbitrary = (page: number) => {
 
                 <span>
                   {{
-                    date.start
+                    date && date.start
                       ? date.end
-                        ? `${format(date.start, 'LLL dd, y')} - ${format(date.end, 'LLL dd, y')}`
-                        : format(date.start, 'LLL dd, y')
+                        ? `${format(date.start as Date, 'LLL dd, y')} - ${format(date.end as Date, 'LLL dd, y')}`
+                        : format(date.start as Date, 'LLL dd, y')
                       : 'Pick a date'
                   }}
                 </span>
               </Button>
             </PopoverTrigger>
             <PopoverContent class="w-auto p-0" align="start">
-              @vue-ignore
-              <Calendar v-model.range="date" :columns="2" />
+              <Calendar v-model.range="date" :columns="1" />
             </PopoverContent>
           </Popover>
-        </div> -->
+        </div>
 
         <!-- Links -->
         <p v-if="!data?.data" class="self-center text-center text-muted-foreground">
           Data is not available
         </p>
+        <ul v-else class="flex w-full flex-col gap-6">
+          <li v-for="item in data?.data" :key="item.id">
+            <CardLinks v-bind="item" />
+          </li>
+        </ul>
 
-        <template v-else>
-          <ul class="flex w-full flex-col gap-6">
-            <li v-for="item in data?.data" :key="item.id">
-              <CardLinks v-bind="item" />
-            </li>
-          </ul>
-
-          <!-- Pagination -->
-          <Pagination
-            v-slot="{ page }"
-            :default-page="1"
-            :items-per-page="6"
-            :page="currentPage"
-            show-edges
-            :sibling-count="2"
-            :total="data?.totalLinks"
-            class="self-center"
+        <!-- Pagination -->
+        <Pagination
+          v-slot="{ page }"
+          :default-page="1"
+          :items-per-page="6"
+          :page="currentPage"
+          show-edges
+          :sibling-count="2"
+          :total="data?.totalLinks"
+          class="self-center"
+        >
+          <PaginationList
+            v-slot="{ items }"
+            class="flex flex-wrap items-center justify-center gap-1"
           >
-            <PaginationList
-              v-slot="{ items }"
-              class="flex flex-wrap items-center justify-center gap-1"
-            >
-              <PaginationFirst @click="handleFirst" />
-              <PaginationPrev @click="handlePrev" />
+            <PaginationFirst @click="handleFirst" />
+            <PaginationPrev @click="handlePrev" />
 
-              <template v-for="(item, index) in items">
-                <PaginationListItem
-                  v-if="item.type === 'page'"
-                  :key="index"
-                  :value="item.value"
-                  as-child
+            <template v-for="(item, index) in items">
+              <PaginationListItem
+                v-if="item.type === 'page'"
+                :key="index"
+                :value="item.value"
+                as-child
+              >
+                <Button
+                  class="h-10 w-10 p-0"
+                  :variant="item.value === page ? 'default' : 'outline'"
+                  @click="handleArbitrary(item.value)"
                 >
-                  <Button
-                    class="h-10 w-10 p-0"
-                    :variant="item.value === page ? 'default' : 'outline'"
-                    @click="handleArbitrary(item.value)"
-                  >
-                    {{ item.value }}
-                  </Button>
-                </PaginationListItem>
-                <PaginationEllipsis v-else :key="item.type" :index="index" />
-              </template>
+                  {{ item.value }}
+                </Button>
+              </PaginationListItem>
+              <PaginationEllipsis v-else :key="item.type" :index="index" />
+            </template>
 
-              <PaginationNext @click="handleNext" />
-              <PaginationLast @click="handleLast" />
-            </PaginationList>
-          </Pagination>
-        </template>
+            <PaginationNext @click="handleNext" />
+            <PaginationLast @click="handleLast" />
+          </PaginationList>
+        </Pagination>
       </CardContent>
     </Card>
   </main>
