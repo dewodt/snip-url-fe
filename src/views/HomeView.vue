@@ -33,7 +33,12 @@ useHead({
         </div>
 
         <!-- Hero Image -->
-        <img src="/logo-cropped.png" alt="Snip URL Logo" class="w-[250px] lg:w-[420px]" />
+        <img
+          src="/logo-cropped.png"
+          fetchpriority="high"
+          alt="Snip URL Logo"
+          class="w-[250px] lg:w-[420px]"
+        />
       </div>
     </section>
   </main>
