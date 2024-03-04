@@ -1,17 +1,18 @@
-import HomeView from '../views/HomeView.vue'
-import LinksView from '../views/dashboard/LinksView.vue'
-import { beURL } from './../lib/url'
-import AboutView from '@/views/AboutView.vue'
-import NotFoundView from '@/views/NotFoundView.vue'
-import PrivacyPolicyView from '@/views/PrivacyPolicyView.vue'
-import ErrorView from '@/views/auth/ErrorView.vue'
-import SignInView from '@/views/auth/SignInView.vue'
-import SignUpView from '@/views/auth/SignUpView.vue'
-import VerifyRequestView from '@/views/auth/VerifyRequestView.vue'
-import CreateNewView from '@/views/dashboard/CreateNewView.vue'
-import SettingsView from '@/views/dashboard/SettingsView.vue'
-import LinksDetailView from '@/views/dashboard/links/LinksDetailView.vue'
+import { beURL } from '@/lib/url'
 import { createRouter, createWebHistory } from 'vue-router'
+
+const HomeView = () => import('@/views/HomeView.vue')
+const LinksView = () => import('@/views/dashboard/LinksView.vue')
+const AboutView = () => import('@/views/AboutView.vue')
+const NotFoundView = () => import('@/views/NotFoundView.vue')
+const PrivacyPolicyView = () => import('@/views/PrivacyPolicyView.vue')
+const ErrorView = () => import('@/views/auth/ErrorView.vue')
+const SignInView = () => import('@/views/auth/SignInView.vue')
+const SignUpView = () => import('@/views/auth/SignUpView.vue')
+const VerifyRequestView = () => import('@/views/auth/VerifyRequestView.vue')
+const CreateNewView = () => import('@/views/dashboard/CreateNewView.vue')
+const SettingsView = () => import('@/views/dashboard/SettingsView.vue')
+const LinksDetailView = () => import('@/views/dashboard/links/LinksDetailView.vue')
 
 // Router definition
 const router = createRouter({
