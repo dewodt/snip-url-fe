@@ -69,11 +69,11 @@ useHead({
         <p class="text-justify text-base lg:text-lg">
           If you have any questions, concerns, or requests related to this Privacy Policy or how we
           handle your data, please contact us at
-          <RouterLink to="mailto:dewantorotriatmojo@gmail.com" target="_blank">
+          <a href="mailto:dewantorotriatmojo@gmail.com" target="_blank">
             <Button tabindex="-1" variant="link" class="h-fit p-0 text-base lg:text-lg">
               this email.
             </Button>
-          </RouterLink>
+          </a>
         </p>
       </div>
     </section>

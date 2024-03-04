@@ -2,7 +2,6 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { useHead } from '@unhead/vue'
-import { RouterLink } from 'vue-router'
 
 // Add custom metatags for current page
 useHead({
@@ -26,24 +25,24 @@ useHead({
         <CardContent class="p-0">
           <p class="text-justify text-base lg:text-xl">
             This app is open source
-            <RouterLink to="https://github.com/dewodt/snip-url-fe" target="_blank">
+            <a href="https://github.com/dewodt/snip-url-fe" target="_blank">
               <Button tabindex="-1" variant="link" class="h-fit p-0 text-base lg:text-xl"
                 >front end</Button
               >
-            </RouterLink>
+            </a>
             and
-            <RouterLink to="https://github.com/dewodt/snip-url-be" target="_blank">
+            <a href="https://github.com/dewodt/snip-url-be" target="_blank">
               <Button tabindex="-1" variant="link" class="h-fit p-0 text-base lg:text-xl">
                 back end.
               </Button>
-            </RouterLink>
+            </a>
             If you have any feedback, suggestion, inquiries, or anything you want to tell me, please
             feel free to contact me at
-            <RouterLink to="mailto:dewantorotriatmojo@gmail.com" target="_blank">
+            <a href="mailto:dewantorotriatmojo@gmail.com" target="_blank">
               <Button tabindex="-1" variant="link" class="h-fit p-0 text-base lg:text-xl">
                 this email.
               </Button>
-            </RouterLink>
+            </a>
           </p>
         </CardContent>
       </Card>
