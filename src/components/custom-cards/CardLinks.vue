@@ -111,7 +111,7 @@ watch(isCopied, (newValue) => {
                   <Badge> +{{ props.customPaths.length - 1 }} more </Badge>
                 </button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent class="max-h-[85vh] overflow-y-auto rounded-lg">
                 <DialogHeader>
                   <DialogTitle class="text-left text-2xl">Shortened URL history</DialogTitle>
                   <DialogDescription class="text-left">
@@ -126,7 +126,7 @@ watch(isCopied, (newValue) => {
                       class="flex gap-3"
                     >
                       <span>{{ getShortenedUrl(path.path) }}</span>
-                      <Badge v-if="index === 0" variant="green"> Latest </Badge>
+                      <Badge v-if="index === 0" variant="green" class="flex-none"> Latest </Badge>
                     </li>
                   </ul>
                 </ScrollArea>

@@ -169,7 +169,7 @@ const handleResetDate = () => {
       </CardHeader>
       <CardContent class="flex flex-col items-start gap-8">
         <!-- Filter date -->
-        <div class="flex flex-row gap-2">
+        <div class="flex w-full flex-row gap-2">
           <!-- Date trigger -->
           <Popover>
             <PopoverTrigger as-child>

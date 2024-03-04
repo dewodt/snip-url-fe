@@ -116,7 +116,7 @@ const onSubmit = form.handleSubmit((values) => mutateAsync(values))
         <PencilIcon class="size-5" />
       </Button>
     </DialogTrigger>
-    <DialogContent @open-auto-focus.prevent>
+    <DialogContent class="max-h-[85vh] overflow-y-auto rounded-lg" @open-auto-focus.prevent>
       <DialogHeader>
         <DialogTitle class="text-2xl">Update link</DialogTitle>
         <DialogDescription>
