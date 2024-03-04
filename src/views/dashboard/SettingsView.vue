@@ -6,17 +6,7 @@ import { useHead } from '@unhead/vue'
 
 // Add custom metatags for current page
 useHead({
-  title: 'Settings | Snip URL',
-  meta: [
-    {
-      name: 'og:title',
-      content: 'Settings | Snip URL'
-    },
-    {
-      name: 'twitter:title',
-      content: 'Settings | Snip URL'
-    }
-  ]
+  title: 'Settings | Snip URL'
 })
 
 // Get session

@@ -5,17 +5,7 @@ import { useHead } from '@unhead/vue'
 
 // Add custom metatags for current page
 useHead({
-  title: 'Error 500 | Snip URL',
-  meta: [
-    {
-      name: 'og:title',
-      content: 'Error 500 | Snip URL'
-    },
-    {
-      name: 'twitter:title',
-      content: 'Error 500 | Snip URL'
-    }
-  ]
+  title: 'Error 500 | Snip URL'
 })
 
 const handleReset = () => {

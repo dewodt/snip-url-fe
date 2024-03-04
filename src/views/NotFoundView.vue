@@ -6,17 +6,7 @@ import { RouterLink } from 'vue-router'
 
 // Add custom metatags for current page
 useHead({
-  title: 'Error 404 | Snip URL',
-  meta: [
-    {
-      name: 'og:title',
-      content: 'Error 404 | Snip URL'
-    },
-    {
-      name: 'twitter:title',
-      content: 'Error 404 | Snip URL'
-    }
-  ]
+  title: 'Error 404 | Snip URL'
 })
 </script>
 

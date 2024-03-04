@@ -5,17 +5,7 @@ import { useHead } from '@unhead/vue'
 
 // Add custom metatags for current page
 useHead({
-  title: 'Sign Up | Snip URL',
-  meta: [
-    {
-      name: 'og:title',
-      content: 'Sign Up | Snip URL'
-    },
-    {
-      name: 'twitter:title',
-      content: 'Sign Up | Snip URL'
-    }
-  ]
+  title: 'Sign Up | Snip URL'
 })
 </script>
 

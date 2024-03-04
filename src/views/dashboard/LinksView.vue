@@ -31,17 +31,7 @@ import { useRoute } from 'vue-router'
 
 // Add custom metatags for current page
 useHead({
-  title: 'Links | Snip URL',
-  meta: [
-    {
-      name: 'og:title',
-      content: 'Links | Snip URL'
-    },
-    {
-      name: 'twitter:title',
-      content: 'Links | Snip URL'
-    }
-  ]
+  title: 'Links | Snip URL'
 })
 
 // Route hook

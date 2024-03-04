@@ -6,17 +6,7 @@ import { RouterLink } from 'vue-router'
 
 // Add custom metatags for current page
 useHead({
-  title: 'Authentication Error | Snip URL',
-  meta: [
-    {
-      name: 'og:title',
-      content: 'Authentication Error | Snip URL'
-    },
-    {
-      name: 'twitter:title',
-      content: 'Authentication Error | Snip URL'
-    }
-  ]
+  title: 'Authentication Error | Snip URL'
 })
 </script>
 

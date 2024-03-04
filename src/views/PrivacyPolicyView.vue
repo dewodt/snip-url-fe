@@ -4,17 +4,7 @@ import { useHead } from '@unhead/vue'
 
 // Add custom metatags for current page
 useHead({
-  title: 'Privacy Policy | Snip URL',
-  meta: [
-    {
-      name: 'og:title',
-      content: 'Privacy Policy | Snip URL'
-    },
-    {
-      name: 'twitter:title',
-      content: 'Privacy Policy | Snip URL'
-    }
-  ]
+  title: 'Privacy Policy | Snip URL'
 })
 </script>
 

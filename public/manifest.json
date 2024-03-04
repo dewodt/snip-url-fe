@@ -1,0 +1,14 @@
+{
+  "name": "Snip URL",
+  "short_name": "Snip URL",
+  "start_url": "https://snip-url.dewodt.com/",
+  "display": "browser",
+  "description": "With Snip URL we help you shorten your URL easily and quickly so it is easier to share and remember.",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "128x128",
+      "type": "image/x-icon"
+    }
+  ]
+}

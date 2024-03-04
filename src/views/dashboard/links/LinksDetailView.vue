@@ -18,17 +18,7 @@ const id = route.params.id
 
 // Add custom metatags for current page
 useHead({
-  title: `Links ID ${id} | Snip URL`,
-  meta: [
-    {
-      name: 'og:title',
-      content: `Links ID ${id} | Snip URL`
-    },
-    {
-      name: 'twitter:title',
-      content: `Links ID ${id} | Snip URL`
-    }
-  ]
+  title: `Links ID ${id} | Snip URL`
 })
 
 // Fetch data
