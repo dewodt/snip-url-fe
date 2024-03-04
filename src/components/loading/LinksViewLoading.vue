@@ -6,7 +6,7 @@ import { LinkIcon } from 'lucide-vue-next'
 </script>
 
 <template>
-  <main className="w-full">
+  <main class="w-full">
     <Card class="shadow-lg">
       <CardHeader>
         <div class="flex flex-row items-center gap-2">

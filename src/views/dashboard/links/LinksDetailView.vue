@@ -3,7 +3,7 @@ import DevicesChart from '@/components/charts/DevicesChart.vue'
 import Last4WeeksChart from '@/components/charts/Last4WeeksChart.vue'
 import ReferrersChart from '@/components/charts/ReferrersChart.vue'
 import { CardAnalytics, CardLinksDetail, CardCountry } from '@/components/custom-cards'
-import ServerErrorView from '@/components/error/ServerErrorView.vue'
+import LinksViewError from '@/components/error/LinksViewError.vue'
 import LinksDetailViewLoading from '@/components/loading/LinksDetailViewLoading.vue'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { queryClient } from '@/lib/query'
@@ -44,11 +44,11 @@ const { data, isPending, isError } = useQuery(
 </script>
 
 <template>
-  <!-- Error -->
-  <ServerErrorView v-if="isError" />
-
   <!-- Loading View -->
   <LinksDetailViewLoading v-if="isPending" />
+
+  <!-- Error -->
+  <LinksViewError v-else-if="isError" />
 
   <!-- Done View -->
   <main v-else class="grid w-full grid-cols-1 gap-6 sm:grid-cols-2">

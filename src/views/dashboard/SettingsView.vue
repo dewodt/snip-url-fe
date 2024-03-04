@@ -14,7 +14,7 @@ const { isPending } = useSession()
 </script>
 
 <template>
-  <main className="w-full">
+  <main class="w-full">
     <!-- Loading view -->
     <SettingsViewLoading v-if="isPending" />
 

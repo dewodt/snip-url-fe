@@ -9,7 +9,7 @@ useHead({
 </script>
 
 <template>
-  <main className="w-full">
+  <main class="w-full">
     <CreateNewForm />
   </main>
 </template>

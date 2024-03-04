@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { CardLinks } from '@/components/custom-cards'
-import ServerErrorView from '@/components/error/ServerErrorView.vue'
+import LinksViewError from '@/components/error/LinksViewError.vue'
 import LinksViewLoading from '@/components/loading/LinksViewLoading.vue'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -152,14 +152,14 @@ const handleResetDate = () => {
 </script>
 
 <template>
-  <!-- Error -->
-  <ServerErrorView v-if="isError" />
-
   <!-- Loading view -->
   <LinksViewLoading v-if="isPending" />
 
+  <!-- Error -->
+  <LinksViewError v-else-if="isError" />
+
   <!-- Done view -->
-  <main v-else className="w-full">
+  <main v-else class="w-full">
     <Card class="shadow-lg">
       <CardHeader>
         <div class="flex flex-row items-center gap-2">
