@@ -37,11 +37,16 @@ const { mutateAsync } = useMutation<SuccessResponse, ErrorResponse<FormDataValue
       formData.append('email', values.email)
 
       // Submit form data
+      const loadingToast = toast.loading('Loading', {
+        description: 'Please wait...',
+        duration: Infinity
+      })
       const res = await fetch(`${beURL}/api/auth/email/sign-in`, {
         method: 'POST',
         body: formData
       })
       const resJSON = await res.json()
+      toast.dismiss(loadingToast)
 
       // Error
       if (!res.ok) {
